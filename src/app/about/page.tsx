@@ -1,5 +1,10 @@
+import LandingSection from "@/components/shared/Landing";
+
 export default function About() {
   return (
-    <div className="flex max-w-full justify-center">This is the about page</div>
+    <>
+      <LandingSection backgroundPath="/images/about.jpg" />
+      This is the about page
+    </>
   );
 }

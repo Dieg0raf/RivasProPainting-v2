@@ -1,7 +1,10 @@
+import LandingSection from "@/components/shared/Landing";
+
 export default function OurWork() {
   return (
-    <div className="flex max-w-full justify-center">
+    <>
+      <LandingSection backgroundPath="/images/our-work.jpg" />
       This is the OUR WORK page
-    </div>
+    </>
   );
 }
