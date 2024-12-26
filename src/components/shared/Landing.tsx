@@ -6,7 +6,7 @@ export default function Landing({
   backgroundPath: string;
 }) {
   return (
-    <div
+    <section
       className={`relative min-h-[550px] h-[50vh] w-full bg-cover bg-center bg-no-repeat`}
       style={{ backgroundImage: `url(${backgroundPath})` }}
     >
@@ -19,15 +19,15 @@ export default function Landing({
             colorType="white"
             headingType="h1"
           />
-          <p className="text-lg">Your local Painting Company</p>
+          <h2 className="text-lg">Your local Painting Company</h2>
           <a
             href="tel:9257683649"
-            className="px-3 py-2 rounded bg-primary-red text-gray-200 hover:text-white"
+            className="px-4 py-2 rounded bg-primary-red text-gray-200 hover:text-white"
           >
             Call us now
           </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
