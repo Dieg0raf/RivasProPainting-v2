@@ -2,12 +2,14 @@ interface HeadlineTextProps {
   text: string;
   colorType: "black" | "white";
   headingType: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  className?: string;
 }
 
 export default function HeadlineText({
   text,
   colorType,
   headingType,
+  className = "",
 }: HeadlineTextProps) {
   const HeadingTag = headingType;
 
@@ -16,7 +18,7 @@ export default function HeadlineText({
   return (
     <div className="relative inline-block">
       <HeadingTag
-        className={`${textColorClass} font-bold text-center text-4xl mb-2`}
+        className={`${textColorClass} ${className} font-bold text-center text-4xl mb-2`}
       >
         {text}
       </HeadingTag>

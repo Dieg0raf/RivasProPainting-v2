@@ -1,20 +1,17 @@
-"use client";
 import HeadlineText from "@/components/shared/HeadlineText";
 import LeafLetMap from "./LeafLetMap";
-import { useModal } from "@/hooks/useModal";
-import { QuoteButton } from "@/components/shared/QuoteButton";
-import { QuoteModal } from "@/components/shared/QuoteModal";
+
+import ServicesButtons from "./services/ServicesButtons";
 
 export default function ServiceAreas() {
-  const { isOpen, openModal, closeModal } = useModal();
-
   return (
     <section className="flex flex-col items-center justify-center py-10">
       <div className="relative flex flex-col items-center gap-10 justify-center z-10 max-w-7xl mx-auto px-4 w-full">
         <HeadlineText text="Service Areas" colorType="black" headingType="h2" />
-        <h3 className="text-lg text-primary-red text-center">
+        <p className="text-center text-gray-600 max-w-2xl mx-auto">
+          {/* {subtitle} */}
           Rivas Pro Painting serving the East Bay and surrounding areas
-        </h3>
+        </p>
 
         {/* Map and Cities Container */}
         <div className="flex flex-col lg:flex-row gap-12 w-full">
@@ -152,10 +149,7 @@ export default function ServiceAreas() {
               </div>
             </div>
 
-            <div className="mt-10 flex justify-center">
-              <QuoteButton onClick={openModal} />
-              <QuoteModal isOpen={isOpen} onClose={closeModal} />
-            </div>
+            <ServicesButtons quote={{ justQuote: true }} />
           </div>
         </div>
       </div>
