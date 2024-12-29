@@ -20,7 +20,7 @@ export default function Landing({
             colorType="white"
             headingType="h1"
           />
-          <h2 className="text-lg">
+          <h2 className="text-lg text-center">
             Transforming Homes & Businesses Throughout the Bay Area
           </h2>
           <ServicesButtons
@@ -28,12 +28,6 @@ export default function Landing({
             quote={{ linkText: "Or Call Us" }}
             className="mt-0"
           />
-          {/* <a
-            href="tel:9257683649"
-            className="px-4 py-2 rounded bg-primary-red text-gray-200 hover:text-white"
-          >
-            Call us now
-          </a> */}
         </div>
       </div>
     </section>

@@ -12,6 +12,7 @@ interface ServicesButtonsProps {
     justQuote?: boolean;
     quoteText?: string;
     linkText?: string;
+    colorLink?: string;
   };
 }
 
@@ -20,19 +21,20 @@ export default function ServicesButtons({
   quote = {
     justQuote: false,
     quoteText: "Ready for your quote? Click here",
+    colorLink: "orange",
   },
   className = "",
 }: ServicesButtonsProps) {
   const { isOpen, openModal, closeModal } = useModal();
 
-  //  reuse the QuoteButton component to create a button that opens the QuoteModal
+  // reuse the QuoteButton component to create a button that opens the QuoteModal
   const href = type === "header" ? "tel:925-594-6142" : "/gallery";
   const linkText = quote?.linkText
     ? quote?.linkText
     : `Explore Our ${type} Work`;
 
   return (
-    <div className={`mt-12 text-center ${className}`}>
+    <div className={`${className} text-center`}>
       <QuoteButton
         className="inline-flex items-center mb-4"
         onClick={openModal}
@@ -43,7 +45,7 @@ export default function ServicesButtons({
         <div>
           <Link
             href={href}
-            className="text-orange-500 focus:text-orange-600 hover:text-orange-600 font-medium inline-flex items-center group transition-colors duration-300"
+            className={`text-${quote.colorLink}-500 focus:text-${quote.colorLink}-600 hover:text-${quote.colorLink}-600 font-medium inline-flex items-center group transition-colors duration-300`}
             aria-label="Request a quote"
           >
             <span>{linkText}</span>
