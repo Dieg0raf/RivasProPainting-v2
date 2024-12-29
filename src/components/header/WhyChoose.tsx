@@ -21,12 +21,8 @@ const WhyChooseSection = () => {
           <div className="flex flex-col justify-start pl-4">
             {" "}
             {/* Added pl-4, removed center justify */}
-            <h2 className="text-3xl md:text-4xl font-light leading-tight">
-              Why Choose
-              <br />
-              Rivas Pro
-              <br />
-              Painting?
+            <h2 className="text-3xl md:text-4xl text-center md:text-left font-light leading-tight">
+              Why Choose Rivas Pro Painting?
             </h2>
           </div>
 
