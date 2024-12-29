@@ -32,7 +32,7 @@ export const navItems = [
   {
     id: "my-quote",
     homepage: true,
-    label: "Get a FREE Quote",
+    label: "Get Your Free Quote",
     ariaLabel: "Open up Free Quote Form",
   },
 ];

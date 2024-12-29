@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,46 @@ interface QuoteModalProps {
 
 export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const modalElement = modalRef.current;
+    if (!modalElement) return;
+
+    const focusableElements = modalElement.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstFocusable = focusableElements[0] as HTMLElement;
+    const lastFocusable = focusableElements[
+      focusableElements.length - 1
+    ] as HTMLElement;
+
+    function handleTab(e: KeyboardEvent) {
+      if (e.key !== "Tab") return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    }
+
+    modalElement.addEventListener("keydown", handleTab);
+    firstFocusable.focus();
+
+    return () => {
+      modalElement.removeEventListener("keydown", handleTab);
+    };
+  }, [isOpen]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,8 +118,12 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 overflow-y-auto min-h-full">
-      <div className="bg-white rounded-xl max-w-md w-full mx-auto shadow-xl">
+    <div
+      ref={modalRef}
+      tabIndex={-1}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 overflow-y-auto min-h-full"
+    >
+      <div className="bg-white text-black rounded-xl max-w-md w-full mx-auto shadow-xl">
         <div className="p-6 space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold">Get Your Free Quote</h2>
@@ -99,10 +143,15 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Full Name <Asterisk />
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" required {...field} />
+                      </FormControl>
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -113,14 +162,20 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="john@example.com"
-                        type="email"
-                        {...field}
-                      />
-                    </FormControl>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Email <Asterisk />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="john@example.com"
+                          type="email"
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -131,14 +186,20 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="(555) 555-5555"
-                        type="tel"
-                        {...field}
-                      />
-                    </FormControl>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Phone Number <Asterisk />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="(555) 555-5555"
+                          type="tel"
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -149,14 +210,20 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project Details</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Tell us about your project..."
-                        className="min-h-[100px]"
-                        {...field}
-                      />
-                    </FormControl>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Project Details <Asterisk />
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us about your project..."
+                          className="min-h-[100px]"
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -184,4 +251,8 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       </div>
     </div>
   );
+}
+
+function Asterisk() {
+  return <span className="text-primary-red">*</span>;
 }
