@@ -147,7 +147,7 @@ export default function ServiceAreas() {
                 </ul>
               </div>
               {/* More Areas Card */}
-              <div className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300">
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300">
                 <h4 className="text-xl font-bold text-primary-blue mb-4 border-b pb-2">
                   And Many More Areas
                 </h4>

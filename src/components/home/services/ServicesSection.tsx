@@ -47,7 +47,7 @@ export const ServicesSection = ({
                 }
               >
                 {/* Fixed height container for image */}
-                <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+                <div className="relative h-60 w-full overflow-hidden bg-gray-100">
                   {service.image ? (
                     <Image
                       src={service.image}

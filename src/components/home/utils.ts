@@ -9,7 +9,7 @@ export const interiorServices: Service[] = [
     {
         title: "Interior Painting & Paint Removal",
         description: "Professional interior painting and paint removal services for homes and commercial spaces. Expert surface preparation and premium paint application for flawless results.",
-        image: "/images/home-page/interior-painting.jpg"
+        image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
         title: "Cabinet Painting",
