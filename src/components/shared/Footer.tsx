@@ -2,6 +2,7 @@ import React from "react";
 import { Phone, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import HeadlineText from "./HeadlineText";
+import ServicesButtons from "../home/services/ServicesButtons";
 
 const Footer = () => {
   return (
@@ -12,6 +13,7 @@ const Footer = () => {
           <HeadlineText
             text="Need a Professional Painter?"
             colorType="white"
+            lineColor="red-600"
             headingType="h2"
           />
 
@@ -19,7 +21,7 @@ const Footer = () => {
             {/* Phone */}
             <a
               href="tel:925-384-7467"
-              className="flex items-center gap-3 hover:text-yellow-400 transition-colors group"
+              className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
             >
               <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-lg">925-384-7467</span>
@@ -30,7 +32,7 @@ const Footer = () => {
               href="https://maps.google.com/?q=Antioch,CA,94509"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 hover:text-yellow-400 transition-colors group"
+              className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
             >
               <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-lg">Antioch, CA 94509</span>
@@ -51,14 +53,20 @@ const Footer = () => {
         </div>
 
         {/* Logo */}
-        <div className="md:ml-8">
+        <div className="md:ml-8 flex flex-col items-center gap-6">
           <Image
             src="/icons/RivasProPaintingLogo.svg"
             alt="Rivas Pro Painting Inc Logo"
-            className="w-32 md:w-40 object-contain"
+            className="w-40 h-auto object-contain" // Fixed width matching button
             width={160}
             height={160}
             loading="lazy"
+          />
+          <ServicesButtons
+            quote={{
+              justQuote: true,
+            }}
+            className="w-40" // Match logo width
           />
         </div>
       </div>

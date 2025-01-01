@@ -23,9 +23,16 @@ export const ServicesSection = ({
   };
 
   return (
-    <section className="py-16 px-4 ">
+    <section className="px-4">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
-        <HeadlineText text={title} colorType="black" headingType="h2" />
+        {/* <HeadlineText text={title} colorType="black" headingType="h2" /> */}
+        <HeadlineText
+          text={title}
+          colorType="black"
+          headingType="h2"
+          className="text-3xl md:text-4xl font-bold text-blue-900 "
+          lineColor="red-600"
+        />
         <p className="text-center text-gray-600 mt-4 mb-12 max-w-2xl mx-auto">
           {subtitle}
         </p>
@@ -34,7 +41,7 @@ export const ServicesSection = ({
           {services.map((service, index) => (
             <div
               key={index}
-              className="transform transition-all duration-300 focus-within::-translate-y-2 focus-within::shadow-xl hover:-translate-y-2 hover:shadow-xl"
+              className="transform transition-all duration-300 focus-within::-translate-y-2 focus-within::shadow-xl hover:-translate-y-2 hover:shadow-xl rounded-3xl"
             >
               <Card
                 className="flex flex-col h-full cursor-pointer overflow-hidden group"
@@ -47,7 +54,7 @@ export const ServicesSection = ({
                 }
               >
                 {/* Fixed height container for image */}
-                <div className="h-48 w-full overflow-hidden bg-gray-100">
+                <div className="relative h-60 w-full overflow-hidden bg-gray-100">
                   {service.image ? (
                     <Image
                       src={service.image}
@@ -76,7 +83,7 @@ export const ServicesSection = ({
         </div>
 
         {/* Services Buttons */}
-        <ServicesButtons type={type} />
+        <ServicesButtons type={type} className="mt-12" />
       </div>
     </section>
   );
