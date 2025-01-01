@@ -7,6 +7,7 @@ export default function LeafletMap() {
 
   useEffect(() => {
     // We need to ensure L is loaded before using it (Dynamically importing Leaflet)
+    // TODO: Figure out how to just import leaflet once instead of every time this component is reloaded (causing error in console)
     import("leaflet").then((L) => {
       if (!mapRef.current) return;
 

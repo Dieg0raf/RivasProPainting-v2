@@ -12,6 +12,7 @@ const Footer = () => {
           <HeadlineText
             text="Need a Professional Painter?"
             colorType="white"
+            lineColor="red-600"
             headingType="h2"
           />
 
@@ -19,7 +20,7 @@ const Footer = () => {
             {/* Phone */}
             <a
               href="tel:925-384-7467"
-              className="flex items-center gap-3 hover:text-yellow-400 transition-colors group"
+              className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
             >
               <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-lg">925-384-7467</span>
@@ -30,7 +31,7 @@ const Footer = () => {
               href="https://maps.google.com/?q=Antioch,CA,94509"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 hover:text-yellow-400 transition-colors group"
+              className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
             >
               <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-lg">Antioch, CA 94509</span>
