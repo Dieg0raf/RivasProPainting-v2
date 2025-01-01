@@ -20,11 +20,11 @@ const Footer = () => {
           <div className="space-y-4">
             {/* Phone */}
             <a
-              href="tel:925-384-7467"
+              href="tel:999-888-7777"
               className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
             >
               <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="text-lg">925-384-7467</span>
+              <span className="text-lg">999-888-7777</span>
             </a>
 
             {/* Address */}
@@ -57,7 +57,7 @@ const Footer = () => {
           <Image
             src="/icons/RivasProPaintingLogo.svg"
             alt="Rivas Pro Painting Inc Logo"
-            className="w-40 h-auto object-contain" // Fixed width matching button
+            className="w-40 h-auto object-contain"
             width={160}
             height={160}
             loading="lazy"
@@ -66,7 +66,7 @@ const Footer = () => {
             quote={{
               justQuote: true,
             }}
-            className="w-40" // Match logo width
+            className="w-40"
           />
         </div>
       </div>

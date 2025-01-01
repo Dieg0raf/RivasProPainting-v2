@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { HeaderDesktopButtons, HeaderMobileButtons } from "./HeaderButtons";
@@ -43,10 +44,23 @@ const Header = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      {/* TODO: Add this little red box on top (might look better without it) */}
-      {/* <div className="flex justify-center">
-        <p>Call US NOW</p>
-      </div> */}
+      {/* Call Now Banner */}
+      <div className="bg-primary-red w-full text-white">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* TODO: Change numbers */}
+          <a
+            href="tel:999-888-7777"
+            className="flex items-center justify-center gap-2 py-1.5 hover:bg-red-700 transition-colors group"
+            aria-label="Call us now at 999-888-7777"
+          >
+            <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            <span className="text-sm font-medium hidden sm:inline">
+              Call Us Now:
+            </span>
+            <span className="text-sm font-bold">999-888-7777</span>
+          </a>
+        </div>
+      </div>
       <nav className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
