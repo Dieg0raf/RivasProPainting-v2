@@ -2,6 +2,7 @@ import React from "react";
 import { Phone, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import HeadlineText from "./HeadlineText";
+import ServicesButtons from "../home/services/ServicesButtons";
 
 const Footer = () => {
   return (
@@ -52,14 +53,20 @@ const Footer = () => {
         </div>
 
         {/* Logo */}
-        <div className="md:ml-8">
+        <div className="md:ml-8 flex flex-col items-center gap-6">
           <Image
             src="/icons/RivasProPaintingLogo.svg"
             alt="Rivas Pro Painting Inc Logo"
-            className="w-32 md:w-40 object-contain"
+            className="w-40 h-auto object-contain" // Fixed width matching button
             width={160}
             height={160}
             loading="lazy"
+          />
+          <ServicesButtons
+            quote={{
+              justQuote: true,
+            }}
+            className="w-40" // Match logo width
           />
         </div>
       </div>
