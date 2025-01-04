@@ -42,8 +42,12 @@ jobs:
       - name: Move Backend Directory to Root
         run: |
           git checkout main -- backend/
-          cp -r backend/* .
-          find . -maxdepth 1 -type d -name "backend" -exec rm -rf {} +
+          # Rename the top-level backend directory to backend-1
+          mv backend backend-1
+          # Move all contents to root
+          cp -r backend-1/* .
+          # Remove only the renamed directory
+          rm -rf backend-1
           git add .
           git commit -m "Sync backend directory to backend branch" || echo "No changes to commit"
 
