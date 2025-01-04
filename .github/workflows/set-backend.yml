@@ -1,4 +1,4 @@
-name: Sync Backend Directory to Backend Branch for deployment
+name: Sync Backend Directory to Backend Branch for Deployment
 
 on:
   push:
@@ -25,25 +25,29 @@ jobs:
       # Step 3: Create or switch to the backend branch
       - name: Switch to Backend Branch
         run: |
-          # Fetch all branches
           git fetch origin
-          # Create or switch to the backend branch
           if git show-ref --quiet refs/heads/backend; then
             git checkout backend
           else
             git checkout -b backend
           fi
 
-      # Step 4: Synchronize the backend directory
-      - name: Sync Backend Directory
+      # Step 4: Clear the backend branch
+      - name: Clear Backend Branch
         run: |
-          # Clear the branch but keep the backend directory
-          git rm -r --cached --ignore-unmatch *
-          git checkout main -- backend/
-          git add backend/
-          git commit -m "Sync backend directory from main" || echo "No changes to commit"
+          git rm -r --cached --ignore-unmatch * || echo "No files to remove"
+          git clean -fd || echo "Nothing to clean"
 
-      # Step 5: Push changes to backend branch
+      # Step 5: Copy contents of backend directory to the root
+      - name: Move Backend Directory to Root
+        run: |
+          git checkout main -- backend/
+          cp -r backend/* .
+          rm -rf backend
+          git add .
+          git commit -m "Sync backend directory to backend branch" || echo "No changes to commit"
+
+      # Step 6: Push changes to backend branch
       - name: Push Changes
         run: |
           git push origin backend --force
