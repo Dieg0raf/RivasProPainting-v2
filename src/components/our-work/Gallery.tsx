@@ -19,6 +19,7 @@ interface GalleryProps {
 const IMAGES_PER_PAGE = 6;
 
 // TODO: Clean up the code and add comments (break down the code into smaller components)
+// TODO: Focus user on the lightbox when it opens (trap focus)
 const Gallery = ({ category }: GalleryProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
