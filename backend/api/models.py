@@ -7,8 +7,8 @@ class Image(models.Model):
         EXTERIOR = 'exterior', 'Exterior'
 
     imageUrl = models.CharField(max_length=200)
-    width = models.IntegerField()
-    height = models.IntegerField()
+    width = models.IntegerField(default=800)
+    height = models.IntegerField(default=600)
     category = models.CharField(
         max_length=8,
         choices=CategoryChoices.choices,  # Limits field to only these choices
