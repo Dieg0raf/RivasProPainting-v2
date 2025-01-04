@@ -1,0 +1,49 @@
+name: Sync Backend Directory to Backend Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the main branch
+      - name: Checkout Main Branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Step 2: Set up Git
+      - name: Set up Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+      # Step 3: Create or switch to the backend branch
+      - name: Switch to Backend Branch
+        run: |
+          # Fetch all branches
+          git fetch origin
+          # Create or switch to the backend branch
+          if git show-ref --quiet refs/heads/backend; then
+            git checkout backend
+          else
+            git checkout -b backend
+          fi
+
+      # Step 4: Synchronize the backend directory
+      - name: Sync Backend Directory
+        run: |
+          # Clear the branch but keep the backend directory
+          git rm -r --cached --ignore-unmatch *
+          git checkout main -- backend/
+          git add backend/
+          git commit -m "Sync backend directory from main" || echo "No changes to commit"
+
+      # Step 5: Push changes to backend branch
+      - name: Push Changes
+        run: |
+          git push origin backend --force
