@@ -1,4 +1,4 @@
-name: Sync Backend Directory to Backend Branch
+name: Sync Backend Directory to Backend Branch for deployment
 
 on:
   push:
