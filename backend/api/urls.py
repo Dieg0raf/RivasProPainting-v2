@@ -5,7 +5,6 @@ from django.conf import settings
 # Only endpoint available in production
 urlpatterns = [ 
     path('images/', views.ImageList, name='image-list'),
-    path('protected/upload-bulk/', views.BulkImageUpload, name='upload-bulk'),
 ]
 
 # Add the temporary signup endpoint if DEBUG is enabled (disabled forever - was only for testing)

@@ -1,0 +1,275 @@
+export interface GalleryImage {
+    id: number;
+    imageUrl: string;
+    width: number;
+    height: number;
+    category: string;
+}
+
+export const galleryImages = {
+    "images": {
+        "interior": [
+            {
+                "id": 1,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-1.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 2,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-2.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 3,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-3.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 4,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-4.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 5,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-5.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 6,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-6.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 7,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-7.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 8,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-8.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 9,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-9.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 10,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-10.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 11,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-11.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 12,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-12.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 13,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-14.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 14,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-15-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 15,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-16-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 16,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-17-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 17,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-18-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 18,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-19-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 19,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-20-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 20,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-21-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 21,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-22-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 22,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-23-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 23,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-24-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 24,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-25-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 25,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-26-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 26,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-27-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 27,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-28-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 28,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-29-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            },
+            {
+                "id": 29,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/interior-images/int-30-min.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "interior",
+            }
+        ],
+        "exterior": [
+            {
+                "id": 30,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-1.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 31,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-2.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 32,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-3.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 33,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-4.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 34,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-5.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 35,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/exit-6.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 36,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-6.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            },
+            {
+                "id": 37,
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/exit-7.jpg",
+                "width": 800,
+                "height": 600,
+                "category": "exterior",
+            }
+        ]
+    }
+}

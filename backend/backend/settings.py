@@ -19,10 +19,12 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv("PROD_APP_HOST", "")]
-
-# TODO: Change this to the production host after initial testing
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    os.getenv("DJANGO_APP_HOST", ""),
+    os.getenv("NEXT_JS_APP_HOST", "")
+    ]
 
 # Application definition
 
@@ -36,7 +38,6 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'corsheaders',
-    # 'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [os.getenv("PROD_APP_HOST", ""), "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = [os.getenv("DJANGO_APP_HOST", ""), os.getenv("NEXT_JS_APP_HOST", ""), "http://localhost:3000"]
 
 CORS_ALLOW_HEADERS = [
     'authorization',
