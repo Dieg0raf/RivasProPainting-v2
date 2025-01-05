@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 export default function LeafletMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
     // We need to ensure L is loaded before using it (Dynamically importing Leaflet)
