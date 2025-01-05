@@ -93,11 +93,11 @@ DATABASES = {}
 if os.getenv("ENVIRONMENT") == "production":
 
     # You can optionally use dj_database_url if you have a DATABASE_URL
-    if os.getenv('URL_DATABASE'):
+    if os.getenv('DATABASE_URL'):
         DATABASES['default'] = dj_database_url.config(
             conn_max_age=0,
             ssl_require=True,
-            default=os.getenv('URL_DATABASE')
+            default=os.getenv('DATABASE_URL')
         )
         # Override the port to use the pooler
         DATABASES['default']['PORT'] = '6543'
