@@ -99,8 +99,6 @@ if os.getenv("ENVIRONMENT") == "production":
             ssl_require=True,
             default=os.getenv('DATABASE_URL')
         )
-        # Override the port to use the pooler
-        DATABASES['default']['PORT'] = '6543'
 
 # Otherwise, use the local database
 else:
