@@ -15,7 +15,7 @@ export default function GalleryHeader({
           <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-400">
             {category}
           </h2>
-          <div className="w-full h-1 bg-gradient-to-r from-red-500 to-red-400 mx-auto mb-6" />
+          <div className="w-[40%] h-1 bg-gradient-to-r from-red-500 to-red-400 mx-auto mb-6" />
         </div>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
           Discover our collection of stunning {category.toLowerCase()} projects

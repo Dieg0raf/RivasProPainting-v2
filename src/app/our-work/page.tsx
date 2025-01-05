@@ -31,7 +31,10 @@ export default function OurWork() {
   // }, [category]);
   return (
     <>
-      <LandingSection backgroundPath="/images/background-image-1.jpg" />
+      <LandingSection
+        backgroundPath="/images/background-image-1.jpg"
+        landingText="Crafting Beauty, One Project at a Time"
+      />
       <Gallery category="Exterior" imageProps={galleryImages.images.exterior} />
       <Gallery category="Interior" imageProps={galleryImages.images.interior} />
     </>

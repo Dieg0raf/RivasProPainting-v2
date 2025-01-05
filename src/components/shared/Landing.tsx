@@ -5,8 +5,10 @@ import ServicesButtons from "../home/services/ServicesButtons";
 
 export default function Landing({
   backgroundPath,
+  landingText,
 }: {
   backgroundPath: string;
+  landingText: string;
 }) {
   return (
     <section
@@ -33,7 +35,7 @@ export default function Landing({
 
           <div className="relative">
             <h2 className="relative text-xl md:text-2xl font-light tracking-wide max-w-2xl text-center leading-relaxed">
-              Transforming Homes & Businesses Throughout the Bay Area
+              {landingText}
             </h2>
           </div>
 

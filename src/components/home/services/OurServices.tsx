@@ -6,7 +6,7 @@ import { exteriorServices, interiorServices } from "../utils";
 // Main page component
 const ServicesPage = () => {
   return (
-    <div className="flex flex-col gap-20">
+    <section id="my-services" className="flex flex-col gap-20">
       {/* Benefits section */}
       <BenefitsSection />
 
@@ -27,7 +27,7 @@ const ServicesPage = () => {
         title="Our Exterior Services"
         subtitle="Enhance your property's curb appeal with our expert exterior painting and maintenance services."
       />
-    </div>
+    </section>
   );
 };
 

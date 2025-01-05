@@ -1,4 +1,5 @@
 import { navItems, scrollToSection } from "./utils";
+import { usePathname, useRouter } from "next/navigation";
 import ServicesButtons from "../home/services/ServicesButtons";
 import Link from "next/link";
 
@@ -14,6 +15,25 @@ export function HeaderMobileButtons({
 }: {
   toggleMenu: () => void;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Function to handle button click (redirect to section on home page or another page)
+  function handleHomeClick(
+    e: React.MouseEvent<HTMLButtonElement>,
+    itemId: string
+  ) {
+    e.preventDefault();
+    if (pathname === "/") {
+      scrollToSection(itemId);
+    } else {
+      router.push(`/`);
+      // Set timeout to scroll to section after the page has changed
+      setTimeout(() => {
+        scrollToSection(itemId);
+      }, 300);
+    }
+  }
   return (
     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
       {navItems.map((item) => {
@@ -30,8 +50,9 @@ export function HeaderMobileButtons({
         return item.homePage ? (
           <button
             key={item.id}
-            onClick={() => {
-              scrollToSection(item.id);
+            onClick={(e) => {
+              // scrollToSection(item.id);
+              handleHomeClick(e, item.id);
               toggleMenu();
             }}
             aria-label={item.ariaLabel}
@@ -59,6 +80,26 @@ export function HeaderMobileButtons({
 }
 
 export function HeaderDesktopButtons() {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Function to handle button click (redirect to section on home page or another page)
+  function handleHomeClick(
+    e: React.MouseEvent<HTMLButtonElement>,
+    itemId: string
+  ) {
+    e.preventDefault();
+    if (pathname === "/") {
+      scrollToSection(itemId);
+    } else {
+      router.push(`/`);
+      // Set timeout to scroll to section after the page has changed
+      setTimeout(() => {
+        scrollToSection(itemId);
+      }, 300);
+    }
+  }
+
   return (
     <div className="flex items-center space-x-8">
       {/* Check if button or link takes user to a section on the home page or to another page */}
@@ -70,7 +111,7 @@ export function HeaderDesktopButtons() {
         return item.homePage ? (
           <button
             key={item.id}
-            onClick={() => scrollToSection(item.id)}
+            onClick={(e) => handleHomeClick(e, item.id)}
             aria-label={item.ariaLabel}
             className={baseDesktopClasses}
           >
