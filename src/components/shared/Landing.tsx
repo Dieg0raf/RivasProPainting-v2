@@ -5,8 +5,12 @@ import ServicesButtons from "../home/services/ServicesButtons";
 
 export default function Landing({
   backgroundPath,
+  landingText,
+  headlineText = "Rivas Pro Painting Inc.",
 }: {
   backgroundPath: string;
+  landingText: string;
+  headlineText?: string;
 }) {
   return (
     <section
@@ -23,7 +27,7 @@ export default function Landing({
           <div className="flex flex-col items-center">
             {/* <div className="w-20 h-1 bg-orange-500 mb-6" /> */}
             <HeadlineText
-              text="Rivas Pro Painting Inc."
+              text={headlineText}
               colorType="white"
               lineColor="red-600"
               headingType="h1"
@@ -33,7 +37,7 @@ export default function Landing({
 
           <div className="relative">
             <h2 className="relative text-xl md:text-2xl font-light tracking-wide max-w-2xl text-center leading-relaxed">
-              Transforming Homes & Businesses Throughout the Bay Area
+              {landingText}
             </h2>
           </div>
 

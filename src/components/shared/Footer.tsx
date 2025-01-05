@@ -15,6 +15,7 @@ const Footer = () => {
             colorType="white"
             lineColor="red-600"
             headingType="h2"
+            footer={true}
           />
 
           <div className="space-y-4">

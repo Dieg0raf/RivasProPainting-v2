@@ -54,7 +54,10 @@ const ReviewCarousel = () => {
   if (!isMounted) return null;
 
   return (
-    <div className="w-full bg-gray-50 relative overflow-hidden">
+    <section
+      id="my-reviews"
+      className="w-full bg-gray-50 relative overflow-hidden"
+    >
       <div className="absolute inset-0 hidden md:block">
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-900/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
@@ -63,10 +66,6 @@ const ReviewCarousel = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
         <div className="text-center mb-12">
-          {/* <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
-            What Our Clients Say
-          </h2>
-          <div className="w-24 h-1 bg-red-600 mx-auto"></div> */}
           <HeadlineText
             text="What Our Clients Say"
             colorType="black"
@@ -155,7 +154,7 @@ const ReviewCarousel = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

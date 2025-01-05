@@ -13,7 +13,6 @@ interface GalleryProps {
 
 const IMAGES_PER_PAGE = 8;
 
-// TODO: Focus user on the lightbox when it opens (trap focus)
 const Gallery = ({ category, imageProps }: GalleryProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +34,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
   const handleImageClick = (image: GalleryImage) => {
     setSelectedImage(image);
   };
+
   const loadMore = () => {
     setLoading(true);
     // Simulate loading delay for better UX
@@ -70,6 +70,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       className="w-full max-w-7xl mx-auto px-4"
       role="region"
       aria-label="Image gallery"
+      id={`${category.toLowerCase()}-gallery`}
     >
       {/* Gallery Header */}
       <GalleryHeader category={category} imageCount={images.length} />
@@ -94,7 +95,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       )}
 
       {/* Reset Button */}
-      {loadedImages === images.length && (
+      {loadedImages === images.length && category === "Interior" && (
         <LoadMoreResetButton
           onClick={loadLess}
           loading={loading}
@@ -104,7 +105,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       )}
 
       {/* Lightbox Modal */}
-      {selectedImage && (
+      {selectedImage && category === "Interior" && (
         <LightboxModal
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
