@@ -17,6 +17,10 @@ from api.authentication import APIKeyAuthentication
 def ImageList(request):
     """Return a list of all images"""
 
+    # Make sure connection is secure (over HTTPS) 
+    if not request.is_secure() and not settings.DEBUG:
+        return Response({"error": "Insecure connection"}, status=status.HTTP_400_BAD_REQUEST)
+
     # fetch all the images from the database
     try:
         images = Image.objects.all()
@@ -53,6 +57,9 @@ def TempSignUp(request):
     if not settings.DEBUG:
         return Response({"error": "Endpoint is disabled"}, status=status.HTTP_403_FORBIDDEN)
 
+    if not request.is_secure() and not settings.DEBUG:
+        return Response({"error": "Insecure connection"}, status=status.HTTP_400_BAD_REQUEST)
+
     # deserialize the data (Convert JSON to Python data types)
     serializer = UserSerializer(data=request.data)
 
@@ -88,8 +95,12 @@ def BulkImageUpload(request):
     """Bulk upload images with their metadata"""
 
     # Make sure the endpoint is disabled in production
-    # if not settings.DEBUG:
-    #     return Response({"error": "Endpoint is disabled"}, status=status.HTTP_403_FORBIDDEN)
+    if not settings.DEBUG:
+        return Response({"error": "Endpoint is disabled"}, status=status.HTTP_403_FORBIDDEN)
+
+    # Make sure the connection is secure (over HTTPS)
+    if not request.is_secure() and not settings.DEBUG:
+        return Response({"error": "Insecure connection"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         images_data = request.data.get('images', [])
