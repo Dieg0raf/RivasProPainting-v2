@@ -91,32 +91,16 @@ DATABASES = {}
 
 # If the environment is production, use the production database
 if os.getenv("ENVIRONMENT") == "production":
-    # Production database with connection pooling
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PROD_NAME', 'postgres'),
-        'USER': os.getenv('PROD_USER'),
-        'PASSWORD': os.getenv('PROD_PASSWORD'),
-        'HOST': os.getenv('PROD_HOST'),
-        'PORT': '6543',  # Using transaction pooler port
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'CONN_MAX_AGE': 0,  # Recommended for connection pooling
-        'POOL_OPTIONS': {
-            'MAX_CONNS': 15,  # Matches your pool size
-        },
-    }
 
-    # # You can optionally use dj_database_url if you have a DATABASE_URL
-    # if os.getenv('DATABASE_URL'):
-    #     DATABASES['default'] = dj_database_url.config(
-    #         conn_max_age=0,
-    #         ssl_require=True,
-    #         default=os.getenv('DATABASE_URL')
-    #     )
-    #     # Override the port to use the pooler
-    #     DATABASES['default']['PORT'] = '6543'
+    # You can optionally use dj_database_url if you have a DATABASE_URL
+    if os.getenv('URL_DATABASE'):
+        DATABASES['default'] = dj_database_url.config(
+            conn_max_age=0,
+            ssl_require=True,
+            default=os.getenv('URL_DATABASE')
+        )
+        # Override the port to use the pooler
+        DATABASES['default']['PORT'] = '6543'
 
 # Otherwise, use the local database
 else:
