@@ -81,6 +81,7 @@ def TempSignUp(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Testing endpoint to bulk upload images
+@api_view(['POST'])
 @authentication_classes([APIKeyAuthentication])
 @permission_classes([IsAuthenticated])
 def BulkImageUpload(request):
