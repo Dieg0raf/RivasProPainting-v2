@@ -105,7 +105,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       )}
 
       {/* Lightbox Modal */}
-      {selectedImage && category === "Interior" && (
+      {selectedImage && (
         <LightboxModal
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
