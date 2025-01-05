@@ -4,14 +4,20 @@ import "leaflet/dist/leaflet.css";
 
 export default function LeafletMap() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
     // We need to ensure L is loaded before using it (Dynamically importing Leaflet)
-    // TODO: Figure out how to just import leaflet once instead of every time this component is reloaded (causing error in console)
     import("leaflet").then((L) => {
       if (!mapRef.current) return;
 
+      // Check if the map instance already exists
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+        return;
+      }
       const map = L.map("map").setView([37.9066, -122.0614], 8);
+      mapInstanceRef.current = map;
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
@@ -52,6 +58,7 @@ export default function LeafletMap() {
 
       return () => {
         map.remove();
+        mapInstanceRef.current = null;
       };
     });
   }, []);
