@@ -72,12 +72,6 @@ const ReviewCarousel = () => {
       id="my-reviews"
       className="w-full bg-gray-50 relative overflow-hidden"
     >
-      {/* <div className="absolute inset-0 hidden md:block">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-900/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
-        <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
-      </div> */}
-
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
         <div className="text-center mb-12">
           <HeadlineText

@@ -1,4 +1,5 @@
 import LandingSection from "@/components/shared/Landing";
+import AboutSection from "@/components/about/About";
 
 export default function About() {
   return (
@@ -8,7 +9,7 @@ export default function About() {
         landingText="From humble beginnings to trusted experts, here's our story."
         headlineText="Get to Know Us"
       />
-      This is the about page
+      <AboutSection />
     </>
   );
 }
