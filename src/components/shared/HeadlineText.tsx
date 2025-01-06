@@ -18,6 +18,8 @@ export default function HeadlineText({
   const HeadingTag = headingType;
 
   // const textColorClass = colorType === "black" ? "text-gray-900" : "text-white";
+  const bgColor = `bg-${lineColor}`;
+  // const bgColor = "bg-red-600";
 
   return (
     <div className="relative inline-block text-center">
@@ -28,13 +30,13 @@ export default function HeadlineText({
       </HeadingTag>
       {!footer && (
         <div
-          className={`absolute left-1/2 transform -translate-x-1/2 -bottom-1 mx-auto w-[40%] h-[3px] bg-${lineColor}`}
+          className={`absolute left-1/2 transform -translate-x-1/2 -bottom-1 mx-auto w-[40%] h-[3px] ${bgColor}`}
         />
       )}
       {footer && (
         <div
           // className={`absolute left-0  transform -translate-x-1/2 -bottom-1 mx-auto w-[40%] h-[3px] bg-${lineColor}`}
-          className={`absolute -bottom-1 left-0 w-full h-[3px] bg-${lineColor}`}
+          className={`absolute -bottom-1 left-0 w-full h-[3px] ${bgColor}`}
         />
       )}
     </div>

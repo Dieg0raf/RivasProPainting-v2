@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rivas Pro Painting",
   description: "Rivas Pro Painting is a painting company in the Bay Area.",
+  icons: {
+    icon: "/icons/RivasProPaintingLogo.svg",
+  },
 };
 
 export default function RootLayout({

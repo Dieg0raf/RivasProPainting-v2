@@ -37,6 +37,20 @@ const ReviewCarousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [activeDotIndex, setActiveDotIndex] = useState(0);
+
+  // Update active dot whenever currentIndex changes
+  useEffect(() => {
+    setActiveDotIndex(Math.floor(currentIndex / cardsToShow));
+  }, [currentIndex, cardsToShow]);
+
+  useEffect(() => {
+    // Calculate total pages on client-side only
+    setTotalPages(Math.ceil(reviews.length / cardsToShow));
+  }, [cardsToShow]);
+
   const handleSlideChange = (direction: "prev" | "next") => {
     if (isTransitioning) return;
     setIsTransitioning(true);
@@ -58,12 +72,6 @@ const ReviewCarousel = () => {
       id="my-reviews"
       className="w-full bg-gray-50 relative overflow-hidden"
     >
-      <div className="absolute inset-0 hidden md:block">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-900/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
-        <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
         <div className="text-center mb-12">
           <HeadlineText
@@ -125,24 +133,20 @@ const ReviewCarousel = () => {
             </button>
 
             <div className="flex gap-2">
-              {[...Array(Math.ceil(reviews.length / cardsToShow))].map(
-                (_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setIsTransitioning(true);
-                      setCurrentIndex(idx * cardsToShow);
-                      setTimeout(() => setIsTransitioning(false), 500);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      Math.floor(currentIndex / cardsToShow) === idx
-                        ? "bg-primary-red"
-                        : "bg-gray-400"
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                )
-              )}
+              {[...Array(totalPages)].map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setIsTransitioning(true);
+                    setCurrentIndex(idx * cardsToShow);
+                    setTimeout(() => setIsTransitioning(false), 500);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    activeDotIndex === idx ? "bg-primary-red" : "bg-gray-400"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
             </div>
 
             <button
