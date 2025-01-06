@@ -30,15 +30,11 @@ const Footer = () => {
             </a>
 
             {/* Address */}
-            <a
-              href="https://maps.google.com/?q=Antioch,CA,94509"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 hover:text-gray-400 transition-colors group"
-            >
-              <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="text-lg">Antioch, CA 94509</span>
-            </a>
+
+            <div className="flex items-center gap-3">
+              <MapPin className="w-5 h-5" />
+              <span className="text-lg">Bay Area</span>
+            </div>
 
             {/* Hours */}
             <div className="flex items-center gap-3">
