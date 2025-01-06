@@ -8,32 +8,32 @@ export interface Service {
 export const interiorServices: Service[] = [
     {
         title: "Interior Painting & Paint Removal",
-        description: "Professional interior painting and paint removal services for homes and commercial spaces. Expert surface preparation and premium paint application for flawless results.",
+        description: "Transform your space with a fresh coat of paint. Our team removes old paint and applies new colors with precision, ensuring long-lasting results you'll love.",
         image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
         title: "Cabinet Painting",
-        description: "Transform outdated cabinets with our expert painting services. Meticulous preparation and quality finishes for a durable, modern look.",
+        description: "Want a new kitchen without the huge cost? Our cabinet painting service saves you thousands while delivering that modern look you've been dreaming of.",
         image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
         title: "Dry Wall & Plaster",
-        description: "Expert drywall repair and plastering services. Creating smooth, flawless surfaces for your interior spaces.",
+        description: "From small holes to large cracks, we make your walls smooth and perfect again. Our skilled team ensures your walls are ready for a beautiful finish.",
         image: "/images/home-page/drywall-card-image.jpg"
     },
     {
         title: "Wallpaper Removal & Installation",
-        description: "Professional wallpaper removal and installation with attention to detail. Create your perfect space with our expert wallpaper services.",
+        description: "Time for something new? Let us handle your wallpaper needs - from careful removal of old paper to perfect installation of your chosen patterns.",
         image: "/images/home-page/wallpaper-card-image.jpeg"
     },
     {
         title: "Trim & Baseboard Painting",
-        description: "Precise trim and baseboard painting to enhance your interior details. Quality finishes that protect and beautify your architectural elements.",
+        description: "The details make the difference. Our precise trim and baseboard painting adds that finishing touch that makes your whole room shine.",
         image: "/images/home-page/baseboard-card-image.webp"
     },
     {
         title: "Crown/Trim Molding & Installation",
-        description: "Expert crown and trim molding installation to elevate your space. Bringing sophistication to your interiors with precise craftsmanship.",
+        description: "Add timeless elegance to any room. Our expert installation and painting of crown molding brings that extra touch of sophistication to your space.",
         image: "/images/home-page/crownmolding-card-image.jpg"
     }
 ];
@@ -41,27 +41,27 @@ export const interiorServices: Service[] = [
 export const exteriorServices: Service[] = [
     {
         title: "Exterior Painting",
-        description: "Professional exterior painting services for all surfaces including stucco, wood, vinyl, aluminum siding, brick, and cedar shingles.",
+        description: "Our expert painters handle all outdoor surfaces - from stucco and wood to vinyl and brick. Your home will look fresh and protected.",
         image: "/images/home-page/residential-exterior-painting.jpg"
     },
     {
         title: "Staining & Varnishing",
-        description: "Expert wood staining and varnishing services to enhance and protect your exterior wood surfaces with premium finishes.",
+        description: "Let our craftsmen bring out the natural beauty of your wood. Our premium stains and varnishes protect your deck, fence, or siding for years.",
         image: "/images/home-page/staining-card-image.jpg"
     },
     {
         title: "Stucco Repairs & Painting",
-        description: "Professional stucco repair and painting services. Seamlessly blend restoration and aesthetics for a durable finish.",
+        description: "Trust your stucco repairs to our skilled team. From fixing cracks to applying fresh paint, your walls will look as good as new.",
         image: "/images/home-page/stucco-card-image.jpg"
     },
     {
         title: "Siding Repairs",
-        description: "Expert siding repair and restoration services. Enhance your property's structural integrity and curb appeal.",
+        description: "Our specialists repair damaged siding to protect your home and boost its curb appeal. Count on lasting results from day one.",
         image: "/images/home-page/siding-card-image.jpeg"
     },
     {
         title: "Power Washing",
-        description: "Professional power washing to remove mildew, oil, and old paint, ensuring optimal surface preparation for painting.",
+        description: "Your surfaces deserve a deep clean. Our power washing team removes years of dirt and grime, preparing your home for a fresh coat of paint.",
         image: "/images/home-page/powerwashing-card-image.jpg"
     }
 ];
