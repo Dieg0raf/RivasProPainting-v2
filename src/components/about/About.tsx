@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Heart, Star, Shield, Users } from "lucide-react";
 import HeadlineText from "../shared/HeadlineText";
