@@ -8,9 +8,10 @@ const COMPANY_INFO = {
   yearStarted: 1985,
   yearsExperience: 35,
   yearEstablished: 2015,
+  amountOfEmployees: 4,
 };
 
-const AboutSection = () => {
+export default function AboutSection() {
   return (
     <div className="min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8">
       {/* Hero Section with Personal Touch */}
@@ -38,19 +39,20 @@ const AboutSection = () => {
       <div className="max-w-4xl mx-auto mb-16">
         <div className="prose max-w-none">
           <p className="text-lg text-gray-700 mb-6">
-            For over {COMPANY_INFO.yearsExperience} years, I&apos;ve lived and
-            breathed the art of painting. My journey began in 1985 with just a
-            ladder, some brushes, and an unwavering dedication to quality. Every
-            weekend, while others rested, I was studying new techniques,
-            learning about materials, and perfecting my craft. This wasn&apos;t
-            just a job for me – it was my calling.
+            With over {COMPANY_INFO.yearsExperience} years in the painting
+            industry, I&apos;ve built my experience from the ground up. Starting
+            in
+            {COMPANY_INFO.yearStarted} with basic tools and determination, I
+            spent years learning the best techniques and working with quality
+            materials. This attention to detail has helped me deliver lasting
+            results for every project.
           </p>
 
           <p className="text-lg text-gray-700 mb-6">
-            In 2015, after three decades of hands-on experience, I took the leap
-            to establish {COMPANY_INFO.name}. But even as we&apos;ve grown,
-            I&apos;ve never lost sight of what matters most: the smile on a
-            homeowner&apos;s face when they see their space transformed.
+            In {COMPANY_INFO.yearEstablished}, I founded {COMPANY_INFO.name} to
+            serve more homeowners across the Bay Area. While our team has grown,
+            our commitment remains the same - delivering quality work that
+            transforms your space and exceeds your expectations.
           </p>
         </div>
       </div>
@@ -73,9 +75,9 @@ const AboutSection = () => {
               Passion for Perfection
             </h3>
             <p className="text-gray-700">
-              I believe that true craftsmanship means never cutting corners.
-              Every project gets my personal attention, ensuring that even the
-              smallest details meet our high standards.
+              Quality work takes time and care. We personally check every detail
+              to make sure your project is done right. No shortcuts, just great
+              results.
             </p>
           </Card>
 
@@ -83,9 +85,9 @@ const AboutSection = () => {
             <Shield className="w-8 h-8 text-blue-900 mb-4" />
             <h3 className="text-xl font-semibold mb-3">Trust & Integrity</h3>
             <p className="text-gray-700">
-              Your home is your sanctuary, and I treat it with the respect it
-              deserves. We&apos;re always transparent about our process,
-              timeline, and pricing.
+              Your home matters to us. We&apos;ll be clear about everything -
+              how long it&apos;ll take, what it&apos;ll cost, and how we&apos;ll
+              do it.
             </p>
           </Card>
 
@@ -93,9 +95,8 @@ const AboutSection = () => {
             <Star className="w-8 h-8 text-orange-600 mb-4" />
             <h3 className="text-xl font-semibold mb-3">Quality Above All</h3>
             <p className="text-gray-700">
-              I personally select all materials and tools we use, ensuring only
-              the best products touch your walls. This attention to quality is
-              why our work stands the test of time.
+              We pick the best paint and tools myself. That&apos;s why our work
+              looks great and lasts long - we use only top-quality materials.
             </p>
           </Card>
 
@@ -103,9 +104,9 @@ const AboutSection = () => {
             <Users className="w-8 h-8 text-blue-900 mb-4" />
             <h3 className="text-xl font-semibold mb-3">Family Values</h3>
             <p className="text-gray-700">
-              Today, I lead a team of five dedicated professionals who share my
-              values. We&apos;re not just workers – we&apos;re a family
-              committed to bringing your vision to life.
+              Our team is like family - {COMPANY_INFO.amountOfEmployees} skilled
+              painters who care about your home as much as I do. Together,
+              we&apos;ll make your ideas come to life.
             </p>
           </Card>
         </div>
@@ -124,6 +125,4 @@ const AboutSection = () => {
       </div>
     </div>
   );
-};
-
-export default AboutSection;
+}
