@@ -8,7 +8,7 @@ export interface Service {
 export const interiorServices: Service[] = [
     {
         title: "Interior Painting & Paint Removal",
-        description: "Transform your space with a fresh coat of paint. Our team removes old paint and applies new colors with precision, ensuring long-lasting results you'll love.",
+        description: "Convert your space with a fresh coat of paint. Our team removes old paint and applies new colors with precision, ensuring long-lasting results you'll love.",
         image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
