@@ -4,28 +4,36 @@ import { JSX } from "react";
 interface BenefitItem {
   text: string;
   icon: JSX.Element;
+  description: string;
 }
 
 const benefits: BenefitItem[] = [
   {
     text: "Locally Owned",
     icon: <Home className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description: "Serving the Bay Area with pride and dedication since 1985",
   },
   {
     text: "Quick and Clean paint work",
     icon: <Clock className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description:
+      "Efficient service without compromising quality or cleanliness",
   },
   {
-    text: "Quick and within budget",
+    text: "Within budget",
     icon: <DollarSign className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description: "Transparent pricing with no hidden costs or surprises",
   },
   {
     text: "Professional & Licensed Painters",
     icon: <Award className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description: "Fully licensed, insured, and expertly trained team",
   },
   {
     text: "Clean Paint Work",
     icon: <Shield className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description:
+      "Detailed preparation and thorough cleanup after every project",
   },
 ];
 
@@ -52,9 +60,7 @@ export default function Benefits() {
                   <h4 className="font-semibold mb-2 text-primary-blue">
                     {benefit.text}
                   </h4>
-                  <p className="text-gray-600">
-                    Professional service with attention to detail
-                  </p>
+                  <p className="text-gray-600">{benefit.description}</p>
                 </div>
               </li>
             ))}

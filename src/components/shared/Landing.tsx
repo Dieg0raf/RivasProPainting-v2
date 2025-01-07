@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import HeadlineText from "@/components/shared/HeadlineText";
 import ServicesButtons from "../home/services/ServicesButtons";
 
@@ -14,9 +15,21 @@ export default function Landing({
 }) {
   return (
     <section
-      className={`relative min-h-[650px] h-[60vh] w-full bg-cover bg-fixed bg-center bg-no-repeat transition-all duration-500`}
-      style={{ backgroundImage: `url(${backgroundPath})` }}
+      // className={`relative min-h-[650px] h-[60vh] w-full bg-cover bg-fixed bg-center bg-no-repeat transition-all duration-500`}
+      className={`relative min-h-[650px] h-[60vh] w-full`}
+      // style={{ backgroundImage: `url(${backgroundPath})` }}
     >
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src={backgroundPath}
+          alt="Background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          quality={85}
+        />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

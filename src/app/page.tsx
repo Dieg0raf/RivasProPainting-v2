@@ -1,5 +1,5 @@
 import LandingSection from "@/components/shared/Landing";
-import ServiceAreasSection from "@/components/home/ServiceAreas";
+import ServiceAreasSection from "@/components/home/service-areas/ServiceAreas";
 import OurServicesSection from "@/components/home/services/OurServices";
 import ReviewCarousel from "@/components/home/ReviewCarousel";
 
