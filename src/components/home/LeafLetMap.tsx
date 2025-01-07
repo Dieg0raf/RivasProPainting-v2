@@ -80,6 +80,8 @@ export default function LeafletMap() {
       <div
         id="map"
         ref={mapRef}
+        aria-label="Map showing our service area"
+        role="img"
         className="z-10 w-full h-full min-h-[500px]"
       ></div>
     </div>
