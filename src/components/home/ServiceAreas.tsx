@@ -5,9 +5,9 @@ import ServicesButtons from "./services/ServicesButtons";
 
 export default function ServiceAreas() {
   return (
+    // TODO: Show less cards on mobile screens
     <section className="flex flex-col items-center justify-center py-10">
       <div className="relative flex flex-col items-center gap-10 justify-center z-10 max-w-7xl mx-auto px-4 w-full">
-        {/* <HeadlineText text="Service Areas" colorType="black" headingType="h2" /> */}
         <HeadlineText
           text="Service Areas"
           colorType="black"

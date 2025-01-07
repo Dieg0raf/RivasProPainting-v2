@@ -14,7 +14,7 @@ const randomColors = [
   "bg-pink-500",
 ];
 
-const ReviewCarousel = () => {
+export default function ReviewCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [cardsToShow, setCardsToShow] = useState(1);
@@ -160,6 +160,4 @@ const ReviewCarousel = () => {
       </div>
     </section>
   );
-};
-
-export default ReviewCarousel;
+}
