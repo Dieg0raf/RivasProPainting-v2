@@ -16,7 +16,18 @@ export default function LeafletMap() {
         mapInstanceRef.current.invalidateSize();
         return;
       }
-      const map = L.map("map").setView([37.9066, -122.0614], 8);
+      const map = L.map("map", {
+        center: [37.9066, -122.0614],
+        zoom: 8,
+        zoomControl: false,
+        dragging: false,
+        // maxZoom: 8,
+        // minZoom: 8,
+        touchZoom: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        // boxZoom: false,
+      });
       mapInstanceRef.current = map;
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -54,7 +65,8 @@ export default function LeafletMap() {
         { color: "blue", weight: 2 }
       ).addTo(map);
 
-      areaOfServiceMarker.bindPopup("<b>Our Area of Service.</b>");
+      // Add a popup to the area of service marker (set to open by default)
+      areaOfServiceMarker.bindPopup("<b>Our Area of Service.</b>").openPopup();
 
       return () => {
         map.remove();
