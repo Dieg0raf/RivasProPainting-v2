@@ -17,13 +17,37 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG", True) == True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
+    '.herokuapp.com',
+    '.vercel.app'
+]
+
+CORS_ALLOWED_ORIGINS = [
     os.getenv("DJANGO_APP_HOST", ""),
-    os.getenv("NEXT_JS_APP_HOST", "")
+    os.getenv("NEXT_JS_APP_HOST", ""),
+]
+
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'accept',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# For development
+if DEBUG:
+    CORS_ALLOWED_ORIGINS += [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+    ]
+    ALLOWED_HOSTS += [
+        'localhost',
+        '127.0.0.1'
     ]
 
 # Application definition
@@ -51,17 +75,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [os.getenv("DJANGO_APP_HOST", ""), os.getenv("NEXT_JS_APP_HOST", ""), "http://localhost:3000"]
 
-CORS_ALLOW_HEADERS = [
-    'authorization',
-    'content-type',
-    'accept',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -169,3 +183,14 @@ REST_FRAMEWORK = {
         'anon': '3/day',  # Limit anonymous users
     }
 }
+
+# AWS SES Settings
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", None)
+AWS_SES_REGION = os.getenv("AWS_SES_REGION", None)
+AWS_SES_REGION_ENDPOINT = os.getenv("AWS_SES_REGION_ENDPOINT", None)
+
+# Default email settings
+DEFAULT_FROM_EMAIL = 'contact@rivas-pro-painting.com'
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
