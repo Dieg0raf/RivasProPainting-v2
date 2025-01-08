@@ -6,7 +6,7 @@ import { exteriorServices, interiorServices } from "../utils";
 // Main page component
 const ServicesPage = () => {
   return (
-    <section id="my-services" className="flex flex-col gap-20">
+    <section className="flex flex-col gap-20">
       {/* Benefits section */}
       <BenefitsSection />
 
