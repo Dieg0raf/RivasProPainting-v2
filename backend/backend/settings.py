@@ -17,13 +17,37 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = str(os.getenv("DEBUG", "False")).lower() == "true"
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
+    '.herokuapp.com',
+    '.vercel.app'
+]
+
+CORS_ALLOWED_ORIGINS = [
     os.getenv("DJANGO_APP_HOST", ""),
-    os.getenv("NEXT_JS_APP_HOST", "")
+    os.getenv("NEXT_JS_APP_HOST", ""),
+]
+
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'accept',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# For development
+if DEBUG:
+    CORS_ALLOWED_ORIGINS += [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+    ]
+    ALLOWED_HOSTS += [
+        'localhost',
+        '127.0.0.1'
     ]
 
 # Application definition
@@ -51,17 +75,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [os.getenv("DJANGO_APP_HOST", ""), os.getenv("NEXT_JS_APP_HOST", ""), "http://localhost:3000"]
 
-CORS_ALLOW_HEADERS = [
-    'authorization',
-    'content-type',
-    'accept',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -87,12 +101,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {}
+# DATABASES = {}
+# DATABASES = {
+#         'default': {
+#             'ENGINE': os.getenv("PROD_ENGINE", None),  
+#             'NAME':     os.getenv("PROD_NAME", None),  
+#             'USER':     os.getenv("PROD_USER", None),  
+#             "PASSWORD": os.getenv("PROD_PASSWORD", None),
+#             "HOST":     os.getenv("PROD_HOST", None),  
+#             "PORT":     5432,                          
+#         }
+#     }
 
+# Initialize the database with the local database URL
+DATABASES = {
+    'default': dj_database_url.config(
+            conn_max_age=0,
+            # ssl_require=True,
+            default=os.getenv('LOCAL_DATABASE_URL')
+    )
+}
 
 # If the environment is production, use the production database
-if os.getenv("ENVIRONMENT") == "production":
-
+if DEBUG:
     # You can optionally use dj_database_url if you have a DATABASE_URL
     if os.getenv('DATABASE_URL'):
         DATABASES['default'] = dj_database_url.config(
@@ -100,20 +131,6 @@ if os.getenv("ENVIRONMENT") == "production":
             ssl_require=True,
             default=os.getenv('DATABASE_URL')
         )
-
-# Otherwise, use the local database
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': os.getenv("LOCAL_ENGINE", None),  
-            'NAME':     os.getenv("LOCAL_NAME", None),
-            'USER':     os.getenv("LOCAL_USER", None),
-            "PASSWORD": os.getenv("LOCAL_PASSWORD", None),
-            "HOST":     'localhost',
-            "PORT":     5432,
-        }
-    }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,13 +176,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 API_SECRET_KEY = os.getenv("API_SECRET_KEY", None)
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'api.authentication.APIKeyAuthentication',
-    ],
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/day',  # Limit anonymous users
-    }
+    'DEFAULT_THROTTLE_CLASSES': [],
+    'DEFAULT_THROTTLE_RATES': {}
 }
+
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ]
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
+        'anon': '100/day',
+        'user': '100/day'
+    }
+
+# AWS SES Settings
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", None)
+AWS_SES_REGION = os.getenv("AWS_SES_REGION", None)
+
+# Default email settings
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", None)
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", None)
+EMAIL_TIMEOUT = 30  # seconds
+TO_EMAIL_ADDRESS = os.getenv("TO_EMAIL_ADDRESS")
