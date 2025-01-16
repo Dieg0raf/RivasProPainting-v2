@@ -27,12 +27,12 @@ export const interiorServices: Service[] = [
         image: "/images/home-page/wallpaper-card-image.jpeg"
     },
     {
-        title: "Trim & Baseboard Painting",
+        title: "Trim & Baseboards",
         description: "The details make the difference. Our precise trim and baseboard painting adds that finishing touch that makes your whole room shine.",
         image: "/images/home-page/baseboard-card-image.webp"
     },
     {
-        title: "Crown/Trim Molding & Installation",
+        title: "Crown Molding Installation",
         description: "Add timeless elegance to any room. Our expert installation and painting of crown molding brings that extra touch of sophistication to your space.",
         image: "/images/home-page/crownmolding-card-image.jpg"
     }

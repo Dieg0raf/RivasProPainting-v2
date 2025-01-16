@@ -27,10 +27,10 @@ export const serviceAreas: ServiceAreasCardProps[] = [
   },
 ];
 
-const AMOUNT_OF_CARDS = 2;
+const AMOUNT_OF_CARDS = 3;
 
 export default function CitiesGrid() {
-  const [visibleCards, setVisibleCards] = useState(3);
+  const [visibleCards, setVisibleCards] = useState(AMOUNT_OF_CARDS);
   const [isMobile, setIsMobile] = useState(false);
 
   // Check if the screen is mobile
