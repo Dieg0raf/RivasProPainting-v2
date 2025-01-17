@@ -12,24 +12,38 @@ interface GalleryProps {
 }
 
 const IMAGES_PER_PAGE = 8;
+const MOBILE_IMAGES_PER_PAGE = 3;
 
 const Gallery = ({ category, imageProps }: GalleryProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState(IMAGES_PER_PAGE);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Check if the screen is mobile
   useEffect(() => {
-    // Load images from props
-    try {
-      setLoading(true);
-      setImages(imageProps);
-    } catch (error) {
-      console.error("Error setting images:", error);
-    } finally {
-      setLoading(false);
-    }
+    const checkMobile = () => {
+      try {
+        setIsMobile(window.innerWidth < 768);
+        setLoading(true);
+        setImages(imageProps);
+        setLoadedImages(
+          window.innerWidth < 768 ? MOBILE_IMAGES_PER_PAGE : IMAGES_PER_PAGE
+        );
+      } catch (error) {
+        console.error("Error setting images:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, [imageProps]);
+
+  const imagesToShow = isMobile ? MOBILE_IMAGES_PER_PAGE : IMAGES_PER_PAGE;
 
   const handleImageClick = (image: GalleryImage) => {
     setSelectedImage(image);
@@ -39,9 +53,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
     setLoading(true);
     // Simulate loading delay for better UX
     setTimeout(() => {
-      setLoadedImages((prev) =>
-        Math.min(prev + IMAGES_PER_PAGE, images.length)
-      );
+      setLoadedImages((prev) => Math.min(prev + imagesToShow, images.length));
       setLoading(false);
     }, 300);
   };
@@ -51,7 +63,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
     // Simulate loading delay for better UX
     setTimeout(() => {
       // Reset to initial images per page
-      setLoadedImages(IMAGES_PER_PAGE);
+      setLoadedImages(imagesToShow);
       setLoading(false);
     }, 300);
   };
@@ -95,14 +107,15 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       )}
 
       {/* Reset Button */}
-      {loadedImages === images.length && category === "Interior" && (
-        <LoadMoreResetButton
-          onClick={loadLess}
-          loading={loading}
-          isLoadMore={false}
-          category={category}
-        />
-      )}
+      {loadedImages === images.length &&
+        (category === "Interior" || isMobile) && (
+          <LoadMoreResetButton
+            onClick={loadLess}
+            loading={loading}
+            isLoadMore={false}
+            category={category}
+          />
+        )}
 
       {/* Lightbox Modal */}
       {selectedImage && (

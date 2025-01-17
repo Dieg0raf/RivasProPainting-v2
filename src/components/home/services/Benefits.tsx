@@ -14,10 +14,10 @@ const benefits: BenefitItem[] = [
     description: "Serving the Bay Area with pride and dedication since 1985",
   },
   {
-    text: "Quick and Clean paint work",
-    icon: <Clock className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    text: "Clean Paint Work",
+    icon: <Shield className="h-6 w-6 text-orange-500 flex-shrink-0" />,
     description:
-      "Efficient service without compromising quality or cleanliness",
+      "Detailed preparation and thorough cleanup after every project",
   },
   {
     text: "Within budget",
@@ -30,10 +30,9 @@ const benefits: BenefitItem[] = [
     description: "Fully licensed, insured, and expertly trained team",
   },
   {
-    text: "Clean Paint Work",
-    icon: <Shield className="h-6 w-6 text-orange-500 flex-shrink-0" />,
-    description:
-      "Detailed preparation and thorough cleanup after every project",
+    text: "Fast Project Completion",
+    icon: <Clock className="h-6 w-6 text-orange-500 flex-shrink-0" />,
+    description: "Quick turnaround times with efficient project management",
   },
 ];
 

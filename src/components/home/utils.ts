@@ -17,8 +17,8 @@ export const interiorServices: Service[] = [
         image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
-        title: "Dry Wall & Plaster",
-        description: "From small holes to large cracks, we make your walls smooth and perfect again. Our skilled team ensures your walls are ready for a beautiful finish.",
+        title: "Drywall and Plaster Repair",
+        description: "Professional drywall repair and restoration. We fix damage of any size and restore your walls to pristine condition, ready for a flawless paint application.",
         image: "/images/home-page/drywall-card-image.jpg"
     },
     {
@@ -27,12 +27,12 @@ export const interiorServices: Service[] = [
         image: "/images/home-page/wallpaper-card-image.jpeg"
     },
     {
-        title: "Trim & Baseboard Painting",
+        title: "Trim & Baseboards",
         description: "The details make the difference. Our precise trim and baseboard painting adds that finishing touch that makes your whole room shine.",
         image: "/images/home-page/baseboard-card-image.webp"
     },
     {
-        title: "Crown/Trim Molding & Installation",
+        title: "Crown Molding Installation",
         description: "Add timeless elegance to any room. Our expert installation and painting of crown molding brings that extra touch of sophistication to your space.",
         image: "/images/home-page/crownmolding-card-image.jpg"
     }
