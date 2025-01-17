@@ -107,14 +107,15 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
       )}
 
       {/* Reset Button */}
-      {loadedImages === images.length && category === "Interior" && (
-        <LoadMoreResetButton
-          onClick={loadLess}
-          loading={loading}
-          isLoadMore={false}
-          category={category}
-        />
-      )}
+      {loadedImages === images.length &&
+        (category === "Interior" || isMobile) && (
+          <LoadMoreResetButton
+            onClick={loadLess}
+            loading={loading}
+            isLoadMore={false}
+            category={category}
+          />
+        )}
 
       {/* Lightbox Modal */}
       {selectedImage && (
