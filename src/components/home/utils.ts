@@ -17,8 +17,8 @@ export const interiorServices: Service[] = [
         image: "/images/home-page/cabinet-card-image.jpg"
     },
     {
-        title: "Dry Wall & Plaster",
-        description: "From small holes to large cracks, we make your walls smooth and perfect again. Our skilled team ensures your walls are ready for a beautiful finish.",
+        title: "Drywall and Plaster Repair",
+        description: "Professional drywall repair and restoration. We fix damage of any size and restore your walls to pristine condition, ready for a flawless paint application.",
         image: "/images/home-page/drywall-card-image.jpg"
     },
     {
