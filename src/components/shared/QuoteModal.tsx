@@ -6,8 +6,9 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ArrowRight, X } from "lucide-react";
+import { Loader2, ArrowRight, X, Check } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -17,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+// Services array remains the same
 const SERVICES = [
   // Interior Services
   { id: "interior_painting", label: "Interior Painting" },
@@ -34,6 +36,7 @@ const SERVICES = [
   { id: "power_washing", label: "Power Washing" },
 ];
 
+// Form schema remains the same
 const formSchema = z.object({
   first_name: z.string().min(2, "Name must be at least 2 characters"),
   last_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -50,8 +53,14 @@ interface QuoteModalProps {
 
 export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showSuccess, setShowSuccess] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShowSuccess(false);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,6 +99,7 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       modalElement.removeEventListener("keydown", handleTab);
     };
   }, [isOpen]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -126,7 +136,6 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      // submission logic
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
         method: "POST",
         headers: {
@@ -137,14 +146,26 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       });
       const data = await response.json();
 
-      // TODO: Add success message
       if (!data.error) {
-        console.log("Quote request submitted successfully");
+        setShowSuccess(true);
+        // Scroll to the success message
+        setTimeout(() => {
+          const successAlert = document.getElementById("success-alert");
+          if (successAlert) {
+            successAlert.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }
+        }, 100);
+        // Increased timeout for better visibility
+        setTimeout(() => {
+          onClose();
+          form.reset();
+        }, 2000);
       } else {
         console.error("Quote request failed to submit. Please try again later");
       }
-
-      onClose();
     } catch (error) {
       console.error(error);
     } finally {
@@ -158,208 +179,224 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     <div
       ref={modalRef}
       tabIndex={-1}
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 overflow-y-auto min-h-full"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 overflow-y-auto"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="bg-white text-black rounded-xl max-w-md w-full mx-auto shadow-xl">
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">Get Your Free Quote</h2>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 rounded-full p-2 hover:bg-gray-100 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Personal Info */}
-              <FormField
-                control={form.control}
-                name="first_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        First Name <Asterisk />
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="John" required {...field} />
-                      </FormControl>
-                    </div>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="last_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        Last Name <Asterisk />
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Doe" required {...field} />
-                      </FormControl>
-                    </div>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        Email <Asterisk />
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="john@example.com"
-                          type="email"
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                    </div>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        Phone Number <Asterisk />
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="(555) 555-5555"
-                          type="tel"
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                    </div>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Services Selection */}
-              <FormField
-                control={form.control}
-                name="services"
-                render={() => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        Services Required <Asterisk />
-                      </FormLabel>
-                      <div className="space-y-3">
-                        {SERVICES.map((service) => (
-                          <FormField
-                            key={service.id}
-                            control={form.control}
-                            name="services"
-                            render={({ field }) => {
-                              return (
-                                <FormItem
-                                  key={service.id}
-                                  className="flex flex-row items-start space-x-3 space-y-0"
-                                >
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(
-                                        service.id
-                                      )}
-                                      onCheckedChange={(checked) => {
-                                        return checked
-                                          ? field.onChange([
-                                              ...field.value,
-                                              service.id,
-                                            ])
-                                          : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== service.id
-                                              )
-                                            );
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {service.label}
-                                  </FormLabel>
-                                </FormItem>
-                              );
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Project Details */}
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col">
-                      <FormLabel className="text-left mb-2">
-                        Project Details <Asterisk />
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell us about your project..."
-                          className="min-h-[100px]"
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                    </div>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary-red hover:bg-red-600 text-white"
+      <div className="bg-white text-black rounded-xl max-w-md w-full mx-auto shadow-xl my-4 relative">
+        <div className="max-h-[calc(100vh-2rem)] overflow-y-auto">
+          <div className="p-6 space-y-6 relative">
+            <div className="flex justify-between items-center sticky top-0 bg-white p z-10">
+              <h2 className="text-2xl font-semibold">Get Your Free Quote</h2>
+              <button
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700 rounded-full p-2 hover:bg-gray-100 transition-colors"
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                    <span>Submitting...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Submit Quote Request</span>
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="first_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col">
+                          <FormLabel className="text-left mb-2">
+                            First Name <Asterisk />
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="John" required {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="last_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col">
+                          <FormLabel className="text-left mb-2">
+                            Last Name <Asterisk />
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="Doe" required {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-col">
+                        <FormLabel className="text-left mb-2">
+                          Email <Asterisk />
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="john@example.com"
+                            type="email"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-col">
+                        <FormLabel className="text-left mb-2">
+                          Phone Number <Asterisk />
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="(555) 555-5555"
+                            type="tel"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="services"
+                  render={() => (
+                    <FormItem>
+                      <div className="flex flex-col">
+                        <FormLabel className="text-left mb-2">
+                          Services Required <Asterisk />
+                        </FormLabel>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {SERVICES.map((service) => (
+                            <FormField
+                              key={service.id}
+                              control={form.control}
+                              name="services"
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={service.id}
+                                    className="flex flex-row items-start space-x-3 space-y-0"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(
+                                          service.id
+                                        )}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([
+                                                ...field.value,
+                                                service.id,
+                                              ])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) =>
+                                                    value !== service.id
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {service.label}
+                                    </FormLabel>
+                                  </FormItem>
+                                );
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-col">
+                        <FormLabel className="text-left mb-2">
+                          Project Details <Asterisk />
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Tell us about your project..."
+                            className="min-h-[100px]"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Success Alert moved just above the submit button */}
+                {showSuccess && (
+                  <div id="success-alert" className="py-2">
+                    <Alert className="bg-green-50 border-green-200 text-green-800 flex items-center justify-center p-4">
+                      <Check className="h-5 w-5 mr-2" />
+                      <AlertDescription className="text-base">
+                        Quote request submitted successfully!
+                      </AlertDescription>
+                    </Alert>
+                  </div>
                 )}
-              </Button>
-            </form>
-          </Form>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-primary-red hover:bg-red-600 text-white"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Submit Quote Request</span>
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </div>
         </div>
       </div>
     </div>
