@@ -35,7 +35,8 @@ const SERVICES = [
 ];
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  first_name: z.string().min(2, "Name must be at least 2 characters"),
+  last_name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
   message: z.string().min(10, "Please provide more details about your project"),
@@ -92,7 +93,8 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      first_name: "",
+      last_name: "",
       email: "",
       phone: "",
       message: "",
@@ -124,9 +126,24 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      // Add submission logic here
-      // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      console.log(values);
+      // submission logic
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${process.env.NEXT_PUBLIC_API_SECRET_KEY}`,
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await response.json();
+
+      // TODO: Add success message
+      if (!data.error) {
+        console.log("Quote request submitted successfully");
+      } else {
+        console.error("Quote request failed to submit. Please try again later");
+      }
+
       onClose();
     } catch (error) {
       console.error(error);
@@ -160,15 +177,34 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
               {/* Personal Info */}
               <FormField
                 control={form.control}
-                name="name"
+                name="first_name"
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex flex-col">
                       <FormLabel className="text-left mb-2">
-                        Full Name <Asterisk />
+                        First Name <Asterisk />
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" required {...field} />
+                        <Input placeholder="John" required {...field} />
+                      </FormControl>
+                    </div>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="last_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Last Name <Asterisk />
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Doe" required {...field} />
                       </FormControl>
                     </div>
 
