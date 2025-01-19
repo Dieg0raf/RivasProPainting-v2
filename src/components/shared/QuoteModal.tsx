@@ -137,14 +137,14 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+      const response = await fetch("/api/quotes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${process.env.NEXT_PUBLIC_API_SECRET_KEY}`,
         },
         body: JSON.stringify(values),
       });
+
       const data = await response.json();
 
       if (!data.error) {
