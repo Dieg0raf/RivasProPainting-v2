@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ArrowRight, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -16,11 +17,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+const SERVICES = [
+  // Interior Services
+  { id: "interior_painting", label: "Interior Painting" },
+  { id: "cabinet_painting", label: "Cabinet Painting" },
+  { id: "drywall", label: "Drywall & Plaster Repair" },
+  { id: "wallpaper", label: "Wallpaper Removal & Installation" },
+  { id: "trim_painting", label: "Trim & Baseboards" },
+  { id: "crown_molding", label: "Crown Molding Installation" },
+
+  // Exterior Services
+  { id: "exterior_painting", label: "Exterior Painting" },
+  { id: "staining", label: "Staining & Varnishing" },
+  { id: "stucco", label: "Stucco Repair & Painting" },
+  { id: "siding", label: "Siding Repair" },
+  { id: "power_washing", label: "Power Washing" },
+];
+
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
   message: z.string().min(10, "Please provide more details about your project"),
+  services: z.array(z.string()).min(1, "Please select at least one service"),
 });
 
 interface QuoteModalProps {
@@ -77,6 +96,7 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       email: "",
       phone: "",
       message: "",
+      services: [],
     },
   });
 
@@ -105,7 +125,7 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     setIsSubmitting(true);
     try {
       // Add submission logic here
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
       console.log(values);
       onClose();
     } catch (error) {
@@ -136,8 +156,8 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Existing FormFields */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Personal Info */}
               <FormField
                 control={form.control}
                 name="name"
@@ -205,6 +225,63 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 )}
               />
 
+              {/* Services Selection */}
+              <FormField
+                control={form.control}
+                name="services"
+                render={() => (
+                  <FormItem>
+                    <div className="flex flex-col">
+                      <FormLabel className="text-left mb-2">
+                        Services Required <Asterisk />
+                      </FormLabel>
+                      <div className="space-y-3">
+                        {SERVICES.map((service) => (
+                          <FormField
+                            key={service.id}
+                            control={form.control}
+                            name="services"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={service.id}
+                                  className="flex flex-row items-start space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(
+                                        service.id
+                                      )}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...field.value,
+                                              service.id,
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) => value !== service.id
+                                              )
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {service.label}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Project Details */}
               <FormField
                 control={form.control}
                 name="message"
