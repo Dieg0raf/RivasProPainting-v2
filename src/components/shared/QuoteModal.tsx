@@ -18,13 +18,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Services array remains the same
 const SERVICES = [
   // Interior Services
   { id: "interior_painting", label: "Interior Painting" },
   { id: "cabinet_painting", label: "Cabinet Painting" },
   { id: "drywall", label: "Drywall & Plaster Repair" },
-  { id: "wallpaper", label: "Wallpaper Removal & Installation" },
   { id: "trim_painting", label: "Trim & Baseboards" },
   { id: "crown_molding", label: "Crown Molding Installation" },
 
@@ -34,6 +32,9 @@ const SERVICES = [
   { id: "stucco", label: "Stucco Repair & Painting" },
   { id: "siding", label: "Siding Repair" },
   { id: "power_washing", label: "Power Washing" },
+
+  // Interior Service
+  { id: "wallpaper", label: "Wallpaper Removal & Installation" },
 ];
 
 // Form schema remains the same
