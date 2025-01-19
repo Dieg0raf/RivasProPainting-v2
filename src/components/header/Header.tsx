@@ -47,7 +47,6 @@ const Header = () => {
       {/* Call Now Banner */}
       <div className="bg-primary-red w-full text-white">
         <div className="max-w-6xl mx-auto px-4">
-          {/* TODO: Change numbers */}
           <a
             href="tel:925-768-3639"
             className="flex items-center justify-center gap-2 py-1.5 hover:bg-red-700 transition-colors group"

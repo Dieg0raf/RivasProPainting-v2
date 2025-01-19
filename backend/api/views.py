@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 def SubmitQuoteRequest(request):
     """Submit a quote request"""
 
-    # if not request.is_secure():
-    #     return Response({"error": "Insecure connection"}, status=status.HTTP_400_BAD_REQUEST)
+    if not request.is_secure() and not settings.DEBUG:
+        return Response({"error": "Insecure connection"}, status=status.HTTP_400_BAD_REQUEST)
 
     if request.data is None:
         return Response({"error": "No data provided"}, status=status.HTTP_400_BAD_REQUEST)

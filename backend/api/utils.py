@@ -17,27 +17,40 @@ def get_service_display_name(service_name):
     return service_names.get(service_name, service_name)
 
 def generate_email_body(data):
-    # Format services into a bullet list
-    services_list = '\n'.join(f'• {get_service_display_name(service)}' for service in data["services"])
+    # Format services with enhanced spacing and clear bullets
+    services_list = '\n\n'.join(f'  • {get_service_display_name(service)}' for service in data["services"])
+    
+    # Get current timestamp in a more readable format
+    timestamp = datetime.now().strftime('%B %d, %Y at %I:%M %p')
     
     email_template = f"""
-        NEW QUOTE REQUEST / NUEVA SOLICITUD DE PRESUPUESTO
+        🔔  NEW QUOTE REQUEST / NUEVA SOLICITUD DE PRESUPUESTO
+
+
+        👤  CLIENT INFORMATION / INFORMACIÓN DEL CLIENTE
         ------------------------------------------------
 
-        Client Information / Información del Cliente:
-        -------------------------------------------
-        Name / Nombre: {data["first_name"]} {data["last_name"]}
-        Email / Correo: {data["email"]}
-        Phone / Teléfono: {data["phone"]}
+        Name / Nombre:     {data["first_name"]} {data["last_name"]}
+        Email / Correo:    {data["email"]}
+        Phone / Teléfono:  {data["phone"]}
 
-        Requested Services / Servicios Solicitados:
-        -----------------------------------------
+
+        📋  REQUESTED SERVICES / SERVICIOS SOLICITADOS
+        ------------------------------------------------
+
         {services_list}
 
-        Project Details / Detalles del Proyecto:
-        --------------------------------------
+
+        📝  PROJECT DETAILS / DETALLES DEL PROYECTO
+        ------------------------------------------------
+
         {data["message"]}
 
-        Quote Received / Presupuesto Recibido: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-        """
+
+        ⏰  Request Received / Solicitud Recibida
+        ------------------------------------------------
+
+        {timestamp}
+    """
+
     return email_template
