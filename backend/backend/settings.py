@@ -17,8 +17,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = str(os.getenv("DEBUG", "False")).lower() == "true"
-DEBUG = True
+DEBUG = str(os.getenv("DEBUG", "False")).lower() == "true"
 
 ALLOWED_HOSTS = [
     os.getenv("ALLOWED_DJANGO_APP_HOST", ""),
@@ -122,23 +121,31 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 
 # Initialize the database with the local database URL
+# DATABASES = {
+#     'default': dj_database_url.config(
+#             conn_max_age=0,
+#             # ssl_require=True,
+#             default=os.getenv('LOCAL_DATABASE_URL')
+#     )
+# }
+
+# # If the environment is production, use the production database
+# if DEBUG:
+#     # You can optionally use dj_database_url if you have a DATABASE_URL
+#     if os.getenv('DATABASE_URL'):
+#         DATABASES['default'] = dj_database_url.config(
+#             conn_max_age=0,
+#             ssl_require=True,
+#             default=os.getenv('DATABASE_URL')
+#         )
+
 DATABASES = {
     'default': dj_database_url.config(
-            conn_max_age=0,
-            # ssl_require=True,
-            default=os.getenv('LOCAL_DATABASE_URL')
+        conn_max_age=0,
+        ssl_require=not DEBUG,
+        default=os.getenv('DATABASE_URL') if not DEBUG else os.getenv('LOCAL_DATABASE_URL')
     )
 }
-
-# If the environment is production, use the production database
-if DEBUG:
-    # You can optionally use dj_database_url if you have a DATABASE_URL
-    if os.getenv('DATABASE_URL'):
-        DATABASES['default'] = dj_database_url.config(
-            conn_max_age=0,
-            ssl_require=True,
-            default=os.getenv('DATABASE_URL')
-        )
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -197,6 +204,36 @@ if not DEBUG:
         'anon': '100/day',
         'user': '100/day'
     }
+
+# Add detailed logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 
 # AWS SES Settings
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
