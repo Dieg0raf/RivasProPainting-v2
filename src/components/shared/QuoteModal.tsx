@@ -146,8 +146,6 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       });
 
       const data = await response.json();
-      console.log(data);
-
       if (!data.error) {
         setShowSuccess(true);
         // Scroll to the success message
