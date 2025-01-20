@@ -1,6 +1,6 @@
 "use client";
 
-import { QuoteModal } from "@/components/shared/QuoteModal";
+import QuoteModal from "@/components/shared/QuoteModal";
 import { useModal } from "@/hooks/useModal";
 import ResOrComContent from "./ResOrComContent";
 

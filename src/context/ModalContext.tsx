@@ -1,6 +1,6 @@
 // contexts/ModalContext.tsx
 "use client";
-import { QuoteModal } from "@/components/shared/QuoteModal";
+import QuoteModal from "@/components/shared/QuoteModal";
 import { createContext } from "react";
 import { useModal } from "@/hooks/useModal";
 

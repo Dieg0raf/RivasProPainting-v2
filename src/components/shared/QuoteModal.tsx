@@ -1,4 +1,4 @@
-"use client";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
@@ -6,9 +6,10 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ArrowRight, X, Check } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft, X, Check } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { SERVICES, formSchema } from "./utils";
 import {
   Form,
   FormControl,
@@ -18,88 +19,52 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-const SERVICES = [
-  // Interior Services
-  { id: "interior_painting", label: "Interior Painting" },
-  { id: "cabinet_painting", label: "Cabinet Painting" },
-  { id: "drywall", label: "Drywall & Plaster Repair" },
-  { id: "trim_painting", label: "Trim & Baseboards" },
-  { id: "crown_molding", label: "Crown Molding Installation" },
-
-  // Exterior Services
-  { id: "exterior_painting", label: "Exterior Painting" },
-  { id: "staining", label: "Staining & Varnishing" },
-  { id: "stucco", label: "Stucco Repair & Painting" },
-  { id: "siding", label: "Siding Repair" },
-  { id: "power_washing", label: "Power Washing" },
-
-  // Interior Service
-  { id: "wallpaper", label: "Wallpaper Removal & Installation" },
-];
-
-// Form schema remains the same
-const formSchema = z.object({
-  first_name: z.string().min(2, "Name must be at least 2 characters"),
-  last_name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  message: z.string().min(10, "Please provide more details about your project"),
-  services: z.array(z.string()).min(1, "Please select at least one service"),
-});
-
-interface QuoteModalProps {
+export default function QuoteModal({
+  isOpen,
+  onClose,
+}: {
   isOpen: boolean;
   onClose: () => void;
-}
-
-export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(1);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
+  // Lock focus inside the modal
   useEffect(() => {
-    if (!isOpen) {
-      setShowSuccess(false);
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) return;
+  // Prevent tabbing out of modal
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Tab") {
+      const focusableElements = modalRef.current?.querySelectorAll(
+        "button, input, textarea, select, a, [tabindex]:not([tabindex='-1'])"
+      ) as NodeListOf<HTMLElement>;
 
-    const modalElement = modalRef.current;
-    if (!modalElement) return;
+      if (focusableElements.length === 0) return;
 
-    const focusableElements = modalElement.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstFocusable = focusableElements[0] as HTMLElement;
-    const lastFocusable = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
 
-    function handleTab(e: KeyboardEvent) {
-      if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstFocusable) {
-          e.preventDefault();
-          lastFocusable.focus();
+      if (event.shiftKey) {
+        // Shift + Tab: Move focus to last element if at the first element
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
         }
       } else {
-        if (document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable.focus();
+        // Tab: Move focus to first element if at the last element
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
         }
       }
     }
-
-    modalElement.addEventListener("keydown", handleTab);
-    firstFocusable.focus();
-
-    return () => {
-      modalElement.removeEventListener("keydown", handleTab);
-    };
-  }, [isOpen]);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -113,16 +78,13 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     },
   });
 
-  // Close modal on escape key
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [onClose]);
+    if (!isOpen) {
+      setShowSuccess(false);
+      setStep(1);
+    }
+  }, [isOpen]);
 
-  // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -134,275 +96,274 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     };
   }, [isOpen]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
+      // Goes to the server to submit the form data (api/quotes/routes.ts)
       const response = await fetch("/api/quotes", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
       const data = await response.json();
       if (!data.error) {
         setShowSuccess(true);
-        // Scroll to the success message
-        setTimeout(() => {
-          const successAlert = document.getElementById("success-alert");
-          if (successAlert) {
-            successAlert.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
-          }
-        }, 100);
-        // Increased timeout for better visibility
         setTimeout(() => {
           onClose();
           form.reset();
         }, 2000);
-      } else {
-        console.error("Quote request failed to submit. Please try again later");
       }
     } catch (error) {
       console.error(error);
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   if (!isOpen) return null;
+
+  const renderMessageStep = () => (
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">Project Details</h3>
+      <FormField
+        control={form.control}
+        name="message"
+        render={({ field: { onChange } }) => (
+          <FormItem>
+            <FormLabel>
+              Project Description <span className="text-red-500">*</span>
+            </FormLabel>
+            <FormControl>
+              <Textarea
+                placeholder="Tell us about your project..."
+                className="min-h-[150px]"
+                onChange={onChange}
+                // value={value || ""}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  );
+
+  const renderServiceStep = () => (
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">Select Services</h3>
+      <FormField
+        control={form.control}
+        name="services"
+        render={({ field }) => (
+          <FormItem className="space-y-4">
+            <FormLabel>
+              Select Services <span className="text-red-500">*</span>
+            </FormLabel>
+            <div className="space-y-6">
+              {["Interior", "Exterior"].map((category) => (
+                <div key={category} className="space-y-2">
+                  <h4 className="font-medium text-sm text-gray-700">
+                    {category} Services
+                  </h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {SERVICES.filter(
+                      (service) => service.category === category
+                    ).map((service) => (
+                      <div
+                        key={service.id}
+                        className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg"
+                      >
+                        <Checkbox
+                          checked={field.value?.includes(service.id)}
+                          onCheckedChange={(checked) => {
+                            const updatedValue = checked
+                              ? [...field.value, service.id]
+                              : field.value?.filter(
+                                  (value) => value !== service.id
+                                );
+                            field.onChange(updatedValue);
+                          }}
+                          id={service.id}
+                        />
+                        <label
+                          htmlFor={service.id}
+                          className="text-sm font-normal cursor-pointer"
+                        >
+                          {service.label}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  );
+
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Personal Information</h3>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="first_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      First Name <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="First name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="last_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Last Name <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Last name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Email <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Phone <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="tel"
+                        placeholder="(555) 555-5555"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+        );
+      case 2:
+        return renderServiceStep();
+      case 3:
+        return renderMessageStep();
+      default:
+        return null;
+    }
+  };
 
   return (
     <div
       ref={modalRef}
+      onKeyDown={handleKeyDown}
       tabIndex={-1}
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 overflow-y-auto"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white text-black rounded-xl max-w-md w-full mx-auto shadow-xl my-4 relative">
-        <div className="max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="p-6 space-y-6 relative">
-            <div className="flex justify-between items-center sticky top-0 bg-white p z-10">
-              <h2 className="text-2xl font-semibold">Get Your Free Quote</h2>
-              <button
-                onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 rounded-full p-2 hover:bg-gray-100 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <div className="bg-white rounded-xl w-full max-w-md mx-auto shadow-xl">
+        <div className="flex justify-between items-center p-4 border-b">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold">Get Your Free Quote</h2>
+            <p className="text-sm text-gray-500">Step {step} of 3</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+            aria-label="Close modal"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="p-4 h-[60vh] overflow-y-auto">
+              {showSuccess ? (
+                <Alert className="bg-green-50 border-green-200 text-green-800">
+                  <Check className="h-5 w-5 mr-2" />
+                  <AlertDescription>
+                    Quote request submitted successfully!
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                renderStep()
+              )}
             </div>
 
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="first_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex flex-col">
-                          <FormLabel className="text-left mb-2">
-                            First Name <Asterisk />
-                          </FormLabel>
-                          <FormControl>
-                            <Input placeholder="John" required {...field} />
-                          </FormControl>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="last_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex flex-col">
-                          <FormLabel className="text-left mb-2">
-                            Last Name <Asterisk />
-                          </FormLabel>
-                          <FormControl>
-                            <Input placeholder="Doe" required {...field} />
-                          </FormControl>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col">
-                        <FormLabel className="text-left mb-2">
-                          Email <Asterisk />
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="john@example.com"
-                            type="email"
-                            required
-                            {...field}
-                          />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col">
-                        <FormLabel className="text-left mb-2">
-                          Phone Number <Asterisk />
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="(555) 555-5555"
-                            type="tel"
-                            required
-                            {...field}
-                          />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="services"
-                  render={() => (
-                    <FormItem>
-                      <div className="flex flex-col">
-                        <FormLabel className="text-left mb-2">
-                          Services Required <Asterisk />
-                        </FormLabel>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {SERVICES.map((service) => (
-                            <FormField
-                              key={service.id}
-                              control={form.control}
-                              name="services"
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={service.id}
-                                    className="flex flex-row items-start space-x-3 space-y-0"
-                                  >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(
-                                          service.id
-                                        )}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([
-                                                ...field.value,
-                                                service.id,
-                                              ])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) =>
-                                                    value !== service.id
-                                                )
-                                              );
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      {service.label}
-                                    </FormLabel>
-                                  </FormItem>
-                                );
-                              }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col">
-                        <FormLabel className="text-left mb-2">
-                          Project Details <Asterisk />
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about your project..."
-                            className="min-h-[100px]"
-                            required
-                            {...field}
-                          />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Success Alert moved just above the submit button */}
-                {showSuccess && (
-                  <div id="success-alert" className="py-2">
-                    <Alert className="bg-green-50 border-green-200 text-green-800 flex items-center justify-center p-4">
-                      <Check className="h-5 w-5 mr-2" />
-                      <AlertDescription className="text-base">
-                        Quote request submitted successfully!
-                      </AlertDescription>
-                    </Alert>
-                  </div>
-                )}
-
+            <div className="p-4 border-t bg-gray-50 flex justify-between items-center">
+              {step > 1 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setStep(step - 1)}
+                  className="w-24"
+                >
+                  Back
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+              )}
+              {step < 3 ? (
+                <Button
+                  type="button"
+                  onClick={() => setStep(step + 1)}
+                  className="w-24 ml-auto"
+                >
+                  Next
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              ) : (
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary-red hover:bg-red-600 text-white"
+                  className="w-24 ml-auto"
                 >
                   {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                      <span>Submitting...</span>
-                    </>
+                    <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    <>
-                      <span>Submit Quote Request</span>
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </>
+                    "Submit"
                   )}
                 </Button>
-              </form>
-            </Form>
-          </div>
-        </div>
+              )}
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   );
-}
-
-function Asterisk() {
-  return <span className="text-primary-red">*</span>;
 }
