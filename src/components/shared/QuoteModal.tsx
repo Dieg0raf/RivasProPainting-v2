@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export function QuoteModal({
+export default function QuoteModal({
   isOpen,
   onClose,
 }: {
@@ -367,5 +367,3 @@ export function QuoteModal({
     </div>
   );
 }
-
-export default QuoteModal;
