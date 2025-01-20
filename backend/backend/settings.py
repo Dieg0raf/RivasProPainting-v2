@@ -25,7 +25,6 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    # os.getenv("DJANGO_APP_HOST", ""),
     os.getenv("NEXT_JS_APP_HOST", ""),
     os.getenv("NEXT_JS_APP_HOST_v2", ""),
 ]
@@ -103,41 +102,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {}
-# DATABASES = {
-#         'default': {
-#             'ENGINE': os.getenv("PROD_ENGINE", None),  
-#             'NAME':     os.getenv("PROD_NAME", None),  
-#             'USER':     os.getenv("PROD_USER", None),  
-#             "PASSWORD": os.getenv("PROD_PASSWORD", None),
-#             "HOST":     os.getenv("PROD_HOST", None),  
-#             "PORT":     5432,                          
-#         }
-#     }
-
-# Initialize the database with the local database URL
-# DATABASES = {
-#     'default': dj_database_url.config(
-#             conn_max_age=0,
-#             # ssl_require=True,
-#             default=os.getenv('LOCAL_DATABASE_URL')
-#     )
-# }
-
-# # If the environment is production, use the production database
-# if DEBUG:
-#     # You can optionally use dj_database_url if you have a DATABASE_URL
-#     if os.getenv('DATABASE_URL'):
-#         DATABASES['default'] = dj_database_url.config(
-#             conn_max_age=0,
-#             ssl_require=True,
-#             default=os.getenv('DATABASE_URL')
-#         )
 
 DATABASES = {
     'default': dj_database_url.config(
