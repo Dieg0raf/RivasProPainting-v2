@@ -29,7 +29,42 @@ export function QuoteModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [step, setStep] = useState(1);
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  // Lock focus inside the modal
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
+  // Prevent tabbing out of modal
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Tab") {
+      const focusableElements = modalRef.current?.querySelectorAll(
+        "button, input, textarea, select, a, [tabindex]:not([tabindex='-1'])"
+      ) as NodeListOf<HTMLElement>;
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        // Shift + Tab: Move focus to last element if at the first element
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab: Move focus to first element if at the last element
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -256,6 +291,8 @@ export function QuoteModal({
   return (
     <div
       ref={modalRef}
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
