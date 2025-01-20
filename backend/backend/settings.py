@@ -197,12 +197,10 @@ REST_FRAMEWORK = {
 
 if not DEBUG:
     REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'api.authentication.APIKeyThrottle'
     ]
     REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
-        'anon': '100/day',
-        'user': '100/day'
+        'api_key': '1000/day'
     }
 
 # Add detailed logging configuration
