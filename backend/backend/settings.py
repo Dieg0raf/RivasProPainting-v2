@@ -20,13 +20,19 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", None)
 DEBUG = str(os.getenv("DEBUG", "False")).lower() == "true"
 
 ALLOWED_HOSTS = [
-    '.herokuapp.com',
-    '.vercel.app'
+    os.getenv("ALLOWED_DJANGO_APP_HOST", ""),
+    os.getenv("ALLOWED_NEXT_JS_APP_HOST", ""),
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    os.getenv("DJANGO_APP_HOST", ""),
+    # os.getenv("DJANGO_APP_HOST", ""),
     os.getenv("NEXT_JS_APP_HOST", ""),
+]
+
+CORS_ALLOW_METHODS = [
+    'POST',
+    'GET',
+    'OPTIONS',
 ]
 
 CORS_ALLOW_HEADERS = [
