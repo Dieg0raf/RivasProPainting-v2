@@ -156,6 +156,17 @@ export default function ReviewCarousel() {
               <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
             </button>
           </div>
+          <div className="flex justify-center mt-8">
+            <a
+              href="https://www.yelp.com/biz/rivas-painting-antioch"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Leave a review"
+              className="px-6 py-3 bg-primary-red text-white rounded-md hover:bg-red-700 transition-colors"
+            >
+              Leave a Review
+            </a>
+          </div>
         </div>
       </div>
     </section>
