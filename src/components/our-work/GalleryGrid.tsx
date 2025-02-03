@@ -29,7 +29,7 @@ export default function GalleryGrid({
           onKeyDown={(e) => handleKeyPress(e, image)}
           tabIndex={0}
           role="button"
-          aria-label={`View ${category} image in lightbox`}
+          aria-label={`View ${category} image`}
         >
           <div className="relative aspect-w-3 aspect-h-2">
             <Image
