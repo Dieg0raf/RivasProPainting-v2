@@ -230,14 +230,14 @@ export const galleryImages = {
             },
             {
                 "id": 32,
-                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-3.jpg",
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-3-new.jpg",
                 "width": 800,
                 "height": 600,
                 "category": "exterior",
             },
             {
                 "id": 33,
-                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-4.jpg",
+                "imageUrl": "https://d1dqghctggt69w.cloudfront.net/exterior-images/ext-4-new.jpg",
                 "width": 800,
                 "height": 600,
                 "category": "exterior",
