@@ -45,7 +45,10 @@ export default function AboutSection() {
             {COMPANY_INFO.yearStarted} with basic tools and determination, I
             spent years learning the best techniques and working with quality
             materials. This attention to detail has helped me deliver lasting
-            results for every project.
+            results for every project.{" "}
+            <span className="font-semibold text-blue-500">
+              Se habla español
+            </span>
           </p>
 
           <p className="text-lg text-gray-700 mb-6">
@@ -116,11 +119,12 @@ export default function AboutSection() {
       <div className="max-w-4xl mx-auto mb-4 text-center">
         <p className="text-lg text-gray-700">
           Proudly serving the East Bay and greater Bay Area with premium
-          painting services since 1985.
+          painting services since 1985.{" "}
         </p>
         <p className="text-lg text-gray-700 mb-6">
           Let&apos;s bring your vision to life with the care and quality you
-          deserve.
+          deserve.{" "}
+          <span className="font-semibold text-blue-500">Se habla español</span>
         </p>
       </div>
     </div>

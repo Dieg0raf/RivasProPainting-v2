@@ -52,6 +52,7 @@ const Footer = () => {
 
         {/* Logo */}
         <div className="md:ml-8 flex flex-col items-center gap-6">
+          <p className="text-lg font-semibold">Se habla español</p>
           <Image
             src="/icons/RivasProPaintingLogo.svg"
             alt="Rivas Pro Painting Inc Logo"
