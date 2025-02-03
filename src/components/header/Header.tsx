@@ -57,6 +57,9 @@ const Header = () => {
               Call Us Now:
             </span>
             <span className="text-sm font-bold">925-768-3639</span>
+            <span className="text-sm font-semibold ml-4 ">
+              Se habla español
+            </span>
           </a>
         </div>
       </div>

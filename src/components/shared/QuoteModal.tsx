@@ -301,6 +301,9 @@ export default function QuoteModal({
           <div className="space-y-1">
             <h2 className="text-xl font-semibold">Get Your Free Quote</h2>
             <p className="text-sm text-gray-500">Step {step} of 3</p>
+            <p className="text-sm font-semibold text-blue-500">
+              Se habla español
+            </p>
           </div>
           <button
             onClick={onClose}
@@ -348,17 +351,22 @@ export default function QuoteModal({
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               ) : (
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-24 ml-auto"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    "Submit"
-                  )}
-                </Button>
+                <div className="flex items-center ml-5 justify-between w-full">
+                  <p className="text-sm font-semibold text-blue-500">
+                    Se habla español
+                  </p>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-24"
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                </div>
               )}
             </div>
           </form>
