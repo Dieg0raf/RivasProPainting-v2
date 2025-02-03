@@ -123,6 +123,7 @@ const Gallery = ({ category, imageProps }: GalleryProps) => {
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
           category={category}
+          images={images}
         />
       )}
     </div>
