@@ -9,7 +9,7 @@ export const interiorServices: Service[] = [
     {
         title: "Interior Painting & Paint Removal",
         description: "Convert your space with a fresh coat of paint. Our team removes old paint and applies new colors with precision, ensuring long-lasting results you'll love.",
-        image: "/images/home-page/cabinet-card-image.jpg"
+        image: "/images/home-page/interior-card-image.jpg"
     },
     {
         title: "Cabinet Painting",
@@ -29,7 +29,7 @@ export const interiorServices: Service[] = [
     {
         title: "Trim & Baseboards",
         description: "The details make the difference. Our precise trim and baseboard painting adds that finishing touch that makes your whole room shine.",
-        image: "/images/home-page/baseboard-card-image.webp"
+        image: "/images/home-page/baseboard-card-image-2.jpg"
     },
     {
         title: "Crown Molding Installation",
@@ -57,7 +57,7 @@ export const exteriorServices: Service[] = [
     {
         title: "Siding Repairs",
         description: "Our specialists repair damaged siding to protect your home and boost its curb appeal. Count on lasting results from day one.",
-        image: "/images/home-page/siding-card-image.jpeg"
+        image: "/images/home-page/siding-card-image-2.jpg"
     },
     {
         title: "Power Washing",
