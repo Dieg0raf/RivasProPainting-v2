@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import Optional
 
 class SingletonLogger:
     """singleton logger to ensure only one logger instance throughout the project"""
