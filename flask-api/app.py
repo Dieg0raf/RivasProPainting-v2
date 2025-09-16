@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import logging
 import os
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from utils.decorators import validate_json, validate_field_lengths, validate_email_format, require_api_key
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from utils.logger import logger
 
 load_dotenv()
 app = Flask(__name__)
@@ -34,18 +34,14 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('LOCAL_DATABASE_URL')
     CORS(app, origins=["localhost:3000", "127.0.0.1:3000"])
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Logger is now imported from utils.logger (singleton)
 
 @app.route('/quote/submit', methods=['POST'])
 @limiter.limit(os.getenv('QUOTE_RATE_LIMIT', '100/day;5/hour;2/minute'))
 @require_api_key
 @validate_json(required_fields=['first_name', 'last_name', 'email', 'phone', 'message', 'services'])
 @validate_field_lengths({
-    'first_name': [1, 50],  # [min_length, max_length]
+    'first_name': [1, 50],  # [min_length (in characters), max_length (in characters)]
     'last_name': [1, 50], 
     'email': [5, 120], 
     'phone': [10, 20], 

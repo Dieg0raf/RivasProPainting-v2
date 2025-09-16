@@ -1,11 +1,9 @@
 from functools import wraps
 from flask import request, jsonify
-import logging
 import re
 import hmac
 import os
-
-logger = logging.getLogger(__name__)
+from .logger import logger
 
 def validate_json(required_fields=None):
     """Validate the JSON format of the request"""
