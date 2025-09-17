@@ -1,12 +1,19 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
-from utils.decorators import validate_json, validate_field_lengths, validate_email_format, require_api_key
+
+# Flask
+from flask import Flask, jsonify, request
+
+# Flask CORS
+from flask_cors import CORS
+
+# Flask Limiter
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+
+# Custom Utils
 from utils.logger import logger
+from utils.decorators import validate_json, validate_field_lengths, validate_email_format, require_api_key
 
 load_dotenv()
 app = Flask(__name__)
@@ -52,9 +59,15 @@ def submit_quote():
 
     logger.info('Submitted quote request')
     try:
-        # TODO: Uncomment this when we have a secure connection
+        # TODO: Uncomment this before deploying to production
         # if not request.is_secure and not app.config['DEBUG']:
         #     return jsonify({'error': 'Insecure connection'}), 400
+
+
+        # TODO: Add Pydantic validation (create a Pydantic model for the request)
+        # TODO: Add Database connection
+        # TODO: Add SQLAlchemy model for the request (ORM)
+        # TODO: Add Email sending (SES) (copy logic from django backend)
         
 
         return jsonify({'message': 'Quote request submitted'}), 200

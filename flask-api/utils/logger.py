@@ -1,5 +1,4 @@
-import logging
-import os
+import logging, os
 
 class SingletonLogger:
     """singleton logger to ensure only one logger instance throughout the project"""
@@ -25,7 +24,6 @@ class SingletonLogger:
         
         # set class variable (shared by all instances)
         self._logger = logging.getLogger('rivas_pro_painting')
-
         if self._logger.handlers:
             return
         

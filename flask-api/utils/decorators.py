@@ -1,8 +1,6 @@
 from functools import wraps
 from flask import request, jsonify
-import re
-import hmac
-import os
+import hmac, re, os
 from .logger import logger
 
 def validate_json(required_fields=None):
