@@ -2,6 +2,7 @@ from database import db
 from sqlalchemy import Column, Integer, String, Text, JSON
 from sqlalchemy.types import DateTime
 from datetime import datetime
+
 class Quote(db.Model):
     __tablename__ = 'quotes'
     id = Column(Integer, primary_key=True)

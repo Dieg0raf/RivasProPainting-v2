@@ -5,25 +5,23 @@ from .logger import logger
 from config.config import MAX_KEY_LENGTH
 
 def validate_json(required_fields=None, max_key_length=MAX_KEY_LENGTH):
-    """Validate the JSON format of the request"""
     def decorator(func):
         @wraps(func) # This preserves the metadata of the function
         def wrapper(*args, **kwargs):
             try:
-                # Check if the required fields are configured
+                # check if the required fields are configured
                 if not required_fields:
                     return jsonify({
                         "error": "Server configuration error",
                         "message": "Required fields are not configured"
                     }), 500
                 
-                # Get the JSON data from the request
                 data = request.get_json()
                 if not data:
                     logger.error('No data provided')
                     return jsonify({'error': 'No data provided', "message": "Please send the data in JSON format"}), 400
                 
-                # Check if the key sizes are within the specified limit
+                # check if the key sizes are within the specified limit
                 for key in data.keys():
                     if len(key) > max_key_length:
                         return jsonify({
@@ -31,7 +29,7 @@ def validate_json(required_fields=None, max_key_length=MAX_KEY_LENGTH):
                             "message": "Field names are too long"
                         }), 400
 
-                # Check if the required fields are present
+                # check if the required fields are present
                 missing_fields = [field for field in required_fields if not data.get(field)]
                 if missing_fields:
                     return jsonify({
@@ -51,13 +49,11 @@ def validate_json(required_fields=None, max_key_length=MAX_KEY_LENGTH):
 
 
 def require_api_key(func):
-    """Require valid API key for endpoint access"""
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             # get API key from Authorization header
             api_key = request.headers.get('Authorization')
-            
             if not api_key:
                 logger.warning("API request without key")
                 return jsonify({

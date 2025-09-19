@@ -31,34 +31,24 @@ from flask_limiter.util import get_remote_address
 from utils.logger import logger
 from utils.decorators import validate_json, require_api_key
 from services.email_services import email_service
+from config import get_config
 
 load_dotenv()
 app = Flask(__name__)
 
+# Load configuration
+config_class = get_config()
+app.config.from_object(config_class)
 
 limiter = Limiter(
     get_remote_address, 
     app=app, 
-    default_limits=os.getenv('DEFAULT_RATE_LIMIT', '100 per day'),
+    default_limits=app.config['DEFAULT_RATE_LIMIT'],
     storage_uri='memory://',
 )
 
-# Set the environment variables for the app
-if os.getenv('FLASK_ENV') == 'PRODUCTION':
-    print('Production environment')
-    app.config['DEBUG'] = False
-    app.config['TESTING'] = False
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('PROD_DATABASE_URL')
-    CORS(app, origins=[os.getenv("NEXT_JS_APP_HOST"), os.getenv("NEXT_JS_APP_HOST_v2")])
-else:
-    print('Local environment')
-    app.config['DEBUG'] = True
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('LOCAL_DATABASE_URL')
-    CORS(app, origins=["localhost:3000", "127.0.0.1:3000"])
-
+# Initialize CORS with configured origins
+CORS(app, origins=app.config['CORS_ORIGINS'])
 
 # initialize the database
 db.init_app(app)
@@ -74,7 +64,7 @@ with app.app_context():
 
 
 @app.route('/quotes', methods=['GET'])
-@limiter.limit(os.getenv('QUOTE_RATE_LIMIT', '100/day;5/hour;2/minute'))
+@limiter.limit(app.config['QUOTE_RATE_LIMIT'])
 def get_quotes():
     print("Get quotes endpoint hit")
     quotes = Quote.query.all()
@@ -93,28 +83,18 @@ def get_quotes():
     return jsonify({'quotes': quotes_list}), 200
 
 @app.route('/quotes', methods=['POST'])
-# TODO: Uncomment this before deploying to production
-# @limiter.limit(os.getenv('QUOTE_RATE_LIMIT', '100/day;5/hour;2/minute'))
-@limiter.limit('1000/day;100/hour')
+@limiter.limit(app.config['QUOTE_RATE_LIMIT'])
 @require_api_key
 @validate_json(required_fields=['first_name', 'last_name', 'email', 'phone', 'message', 'services'])
 def submit_quote():
-
     logger.info('Submitted quote request')
     try:
-        # TODO: Uncomment this before deploying to production
-        # if not request.is_secure and not app.config['DEBUG']:
-        #     return jsonify({'error': 'Insecure connection'}), 400
+        if not request.is_secure and not app.config['DEBUG']:
+            return jsonify({'error': 'Insecure connection'}), 400
 
-        # **request.json is used to unpack the dictionary (JSON data request.json) into the Pydantic model
+        # serialize data
         quote_serialized = QuoteCreate(**request.json)
-
-        # **quote_serialized.model_dump() is used to unpack the dictionary into the SQLAlchemy model
         quote = Quote(**quote_serialized.model_dump())
-
-        if not quote:
-            logger.error('Quote not created')
-            return jsonify({'error': 'Quote not created'}), 400
 
         # add to database
         db.session.add(quote)
@@ -127,16 +107,17 @@ def submit_quote():
             return jsonify({'error': 'Failed to send quote email'}), 500
         
         logger.info(f'Quote submitted successfully for {quote.first_name} {quote.last_name}')
-
         return jsonify({'message': 'Quote request submitted'}), 200
+
     except IntegrityError as e:
         logger.error(f'Integrity error: {str(e)}')
         db.session.rollback()
         return jsonify({'error': 'Database Integrity error'}), 400
+        
     except ValidationError as e:
         logger.error(f'Validation error: {str(e)}')
 
-        # Collect missing or invalid fields in a similar structure to validate_json
+        # collect missing or invalid fields in a similar structure to validate_json
         violations = []
         for error in e.errors():
             field_name = error['loc'][0] if error['loc'] else 'unknown'
