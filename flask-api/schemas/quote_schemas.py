@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from config.validation import FIELD_LENGTHS
+from config.validation import FIELD_LENGTHS, ALLOWED_SERVICES
 import re
 
 class QuoteCreate(BaseModel):
@@ -41,9 +41,13 @@ class QuoteCreate(BaseModel):
             raise ValueError(f"Message must be between {FIELD_LENGTHS['message'][0]} and {FIELD_LENGTHS['message'][1]} characters")
         return v
 
-    # TODO: Validate that services are valid ones (actual services we offer)
     @validator('services')
     def validate_services(cls, v):
         if not v or len(v) == 0:
             raise ValueError("Services are required")
+
+        for service in v:
+            if service not in ALLOWED_SERVICES:
+                raise ValueError(f"Invalid service: {service}")
+
         return v
