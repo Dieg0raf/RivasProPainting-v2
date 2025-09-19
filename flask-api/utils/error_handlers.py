@@ -1,6 +1,11 @@
 from pydantic import ValidationError
 from typing import Dict, Any
 
+def format_success_response(message: str) -> Dict[str, str]:
+    return {
+        "message": message
+    }
+
 def format_validation_errors(validation_error: ValidationError) -> Dict[str, Any]:
     violations = []
     for error in validation_error.errors():
@@ -25,7 +30,7 @@ def format_integrity_error(integrity_error) -> Dict[str, str]:
 
 def format_generic_error(error_message: str) -> Dict[str, str]:
     return {
-        "error": "Internal server error",
+        "error": error_message,
     }
 
 def format_rate_limit_error() -> Dict[str, str]:

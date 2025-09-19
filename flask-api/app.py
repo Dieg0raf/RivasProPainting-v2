@@ -30,8 +30,14 @@ from flask_limiter.util import get_remote_address
 from utils.logger import logger
 from utils.decorators import validate_json, require_api_key
 from services.email_services import email_service
-from utils.error_handlers import format_validation_errors, format_generic_error, format_integrity_error, format_rate_limit_error
 from config import get_config
+from utils.error_handlers import (
+    format_validation_errors, 
+    format_generic_error, 
+    format_integrity_error, 
+    format_rate_limit_error, 
+    format_success_response
+)
 
 load_dotenv()
 app = Flask(__name__)
@@ -90,7 +96,7 @@ def submit_quote():
     logger.info('Submitted quote request')
     try:
         if not request.is_secure and not app.config['DEBUG']:
-            return jsonify({'error': 'Insecure connection'}), 400
+            return jsonify(format_generic_error('Insecure connection')), 400
 
         # serialize data
         quote_serialized = QuoteCreate(**request.json)
@@ -104,10 +110,10 @@ def submit_quote():
         email_sent = email_service.send_quote_email(quote_serialized.model_dump())
         if not email_sent:
             logger.error('Failed to send quote email via SES')
-            return jsonify({'error': 'Failed to send quote email'}), 500
+            return jsonify(format_generic_error('Failed to send quote email')), 500
         
         logger.info(f'Quote submitted successfully for {quote.first_name} {quote.last_name}')
-        return jsonify({'message': 'Quote request submitted'}), 200
+        return jsonify(format_success_response('Quote request submitted')), 200
 
     except IntegrityError as e:
         logger.error(f'Integrity error: {str(e)}')
@@ -121,7 +127,7 @@ def submit_quote():
     except Exception as e:
         logger.error(f'Error submitting quote request: {str(e)}')
         db.session.rollback()
-        return jsonify(format_generic_error(str(e))), 500
+        return jsonify(format_generic_error('Internal Server Error')), 500
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
