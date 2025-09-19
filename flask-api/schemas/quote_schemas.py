@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from config.validation import FIELD_LENGTHS, ALLOWED_SERVICES
+from config.config import FIELD_LENGTHS, ALLOWED_SERVICES
 import re
 
 class QuoteCreate(BaseModel):
@@ -45,6 +45,11 @@ class QuoteCreate(BaseModel):
     def validate_services(cls, v):
         if not v or len(v) == 0:
             raise ValueError("Services are required")
+        
+        print(len(ALLOWED_SERVICES))
+
+        if len(v) > len(ALLOWED_SERVICES):
+            raise ValueError(f"Services must be less than {len(ALLOWED_SERVICES)}")
 
         for service in v:
             if service not in ALLOWED_SERVICES:

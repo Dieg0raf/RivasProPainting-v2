@@ -1,6 +1,9 @@
 import os
 from dotenv import load_dotenv
 
+# Database
+from database import db
+
 # Models for DB
 from models.quote import Quote
 
@@ -11,6 +14,7 @@ from schemas.quote_schemas import QuoteCreate
 from pydantic import ValidationError
 
 # SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 # Flask
@@ -26,9 +30,11 @@ from flask_limiter.util import get_remote_address
 # Custom Utils
 from utils.logger import logger
 from utils.decorators import validate_json, require_api_key
+from services.email_services import email_service
 
 load_dotenv()
 app = Flask(__name__)
+
 
 limiter = Limiter(
     get_remote_address, 
@@ -53,11 +59,38 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('LOCAL_DATABASE_URL')
     CORS(app, origins=["localhost:3000", "127.0.0.1:3000"])
 
-@app.route('/health', methods=['GET'])
+
+# initialize the database
+db.init_app(app)
+
+# creates all tables in the database
+with app.app_context():
+    try:
+        logger.info('Creating database tables')
+        db.create_all()
+        logger.info('Database tables created successfully')
+    except Exception as e:
+        logger.error(f'Error creating database tables: {e}')
+
+
+@app.route('/quotes', methods=['GET'])
 @limiter.limit(os.getenv('QUOTE_RATE_LIMIT', '100/day;5/hour;2/minute'))
-def health():
-    print("Health check endpoint hit")
-    return jsonify({'message': 'API is healthy'}), 200
+def get_quotes():
+    print("Get quotes endpoint hit")
+    quotes = Quote.query.all()
+    quotes_list = []
+    for quote in quotes:
+        quotes_list.append({
+            'id': quote.id,
+            'first_name': quote.first_name,
+            'last_name': quote.last_name,
+            'email': quote.email,
+            'phone': quote.phone,
+            'message': quote.message,
+            'services': quote.services,
+            'created_at': quote.created_at,
+        })
+    return jsonify({'quotes': quotes_list}), 200
 
 @app.route('/quotes', methods=['POST'])
 # TODO: Uncomment this before deploying to production
@@ -77,16 +110,28 @@ def submit_quote():
         quote_serialized = QuoteCreate(**request.json)
 
         # **quote_serialized.model_dump() is used to unpack the dictionary into the SQLAlchemy model
-        quote_db = Quote(**quote_serialized.model_dump())
+        quote = Quote(**quote_serialized.model_dump())
 
-        # TODO: Add Database connection
-        # TODO: (DONE but not connected to DB) Add SQLAlchemy model for the request (ORM)
-        # TODO: Add Email sending (SES) (copy logic from django backend)
+        if not quote:
+            logger.error('Quote not created')
+            return jsonify({'error': 'Quote not created'}), 400
+
+        # add to database
+        db.session.add(quote)
+        db.session.commit()
+
+        # send quote email to admin
+        email_sent = email_service.send_quote_email(quote_serialized.model_dump())
+        if not email_sent:
+            logger.error('Failed to send quote email via SES')
+            return jsonify({'error': 'Failed to send quote email'}), 500
         
+        logger.info(f'Quote submitted successfully for {quote.first_name} {quote.last_name}')
 
         return jsonify({'message': 'Quote request submitted'}), 200
     except IntegrityError as e:
         logger.error(f'Integrity error: {str(e)}')
+        db.session.rollback()
         return jsonify({'error': 'Database Integrity error'}), 400
     except ValidationError as e:
         logger.error(f'Validation error: {str(e)}')
@@ -109,6 +154,7 @@ def submit_quote():
         }), 400
     except Exception as e:
         logger.error(f'Error submitting quote request: {str(e)}')
+        db.session.rollback()
         return jsonify({'error': 'Failed to submit quote request'}), 500
 
 @app.errorhandler(429)

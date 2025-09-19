@@ -2,7 +2,7 @@ from functools import wraps
 from flask import request, jsonify
 import hmac, re, os
 from .logger import logger
-from config.validation import MAX_KEY_LENGTH
+from config.config import MAX_KEY_LENGTH
 
 def validate_json(required_fields=None, max_key_length=MAX_KEY_LENGTH):
     """Validate the JSON format of the request"""

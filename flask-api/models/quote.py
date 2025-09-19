@@ -1,15 +1,8 @@
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String, Text
+from database import db
+from sqlalchemy import Column, Integer, String, Text, JSON
 from sqlalchemy.types import DateTime
 from datetime import datetime
-
-# FYI: 
-# Cannot use 'DeclarativeBase' directly as a declarative base class. Create a Base by creating a subclass of it.
-
-class Base(DeclarativeBase):
-    pass
-
-class Quote(Base):
+class Quote(db.Model):
     __tablename__ = 'quotes'
     id = Column(Integer, primary_key=True)
     first_name = Column(String(50), nullable=False)
@@ -17,5 +10,5 @@ class Quote(Base):
     email = Column(String(120), nullable=False)
     phone = Column(String(20), nullable=False)
     message = Column(Text, nullable=False)
-    services = Column(String(20), nullable=False)
+    services = Column(JSON, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
