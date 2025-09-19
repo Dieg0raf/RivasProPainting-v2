@@ -71,6 +71,7 @@ with app.app_context():
 
 @app.route('/quotes', methods=['GET'])
 @limiter.limit(app.config['QUOTE_RATE_LIMIT'])
+@require_api_key
 def get_quotes():
     print("Get quotes endpoint hit")
     quotes = Quote.query.all()
@@ -135,4 +136,4 @@ def ratelimit_handler(e):
     return jsonify(format_rate_limit_error()), 429
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=app.config['DEBUG'])
