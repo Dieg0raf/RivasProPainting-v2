@@ -1,4 +1,3 @@
-import os
 from dotenv import load_dotenv
 
 # Database
@@ -31,6 +30,7 @@ from flask_limiter.util import get_remote_address
 from utils.logger import logger
 from utils.decorators import validate_json, require_api_key
 from services.email_services import email_service
+from utils.error_handlers import format_validation_errors, format_generic_error, format_integrity_error, format_rate_limit_error
 from config import get_config
 
 load_dotenv()
@@ -112,39 +112,21 @@ def submit_quote():
     except IntegrityError as e:
         logger.error(f'Integrity error: {str(e)}')
         db.session.rollback()
-        return jsonify({'error': 'Database Integrity error'}), 400
+        return jsonify(format_integrity_error(e)), 400
         
     except ValidationError as e:
         logger.error(f'Validation error: {str(e)}')
-
-        # collect missing or invalid fields in a similar structure to validate_json
-        violations = []
-        for error in e.errors():
-            field_name = error['loc'][0] if error['loc'] else 'unknown'
-            violations.append({
-                "field": field_name,
-                "reason": error['msg'],
-                "input": error.get('input', ''),
-                "error_type": error.get('type', 'validation_error')
-            })
-
-        return jsonify({
-            "error": "Validation failed",
-            "message": "Please fill in all the required fields correctly",
-            "violations": violations
-        }), 400
+        return jsonify(format_validation_errors(e)), 400
+        
     except Exception as e:
         logger.error(f'Error submitting quote request: {str(e)}')
         db.session.rollback()
-        return jsonify({'error': 'Failed to submit quote request'}), 500
+        return jsonify(format_generic_error(str(e))), 500
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
     logger.warning(f"Rate limit exceeded: {e.description}")
-    return jsonify({
-        "error": "Rate limit exceeded",
-        "message": "Too many requests. Please try again later.",
-    }), 429
+    return jsonify(format_rate_limit_error()), 429
 
 if __name__ == '__main__':
     app.run(debug=True)
