@@ -102,20 +102,20 @@ export default function QuoteModal({
     try {
       console.log("Form Values:", values);
       // Goes to the server to submit the form data (api/quotes/routes.ts)
-      // const response = await fetch("/api/quotes", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(values),
-      // });
+      const response = await fetch("/api/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-      // const data = await response.json();
-      // if (!data.error) {
-      //   setShowSuccess(true);
-      //   setTimeout(() => {
-      //     onClose();
-      //     form.reset();
-      //   }, 2000);
-      // }
+      const data = await response.json();
+      if (!data.error) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          onClose();
+          form.reset();
+        }, 2000);
+      }
     } catch (error) {
       console.error(error);
     } finally {
