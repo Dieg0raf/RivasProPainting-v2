@@ -17,7 +17,7 @@ class SingletonLogger:
             return
         
         # determine log level (less verbose in production) based on environment
-        if os.getenv('FLASK_ENV') == 'PRODUCTION':
+        if os.getenv('FLASK_ENV') == 'production':
             level = logging.INFO 
         else:
             level = logging.DEBUG 

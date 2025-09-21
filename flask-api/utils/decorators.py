@@ -38,6 +38,7 @@ def validate_json(required_fields=None, max_key_length=MAX_KEY_LENGTH):
                         "missing_fields": missing_fields
                     }), 400
                 
+                logger.info('JSON validated successfully')
                 return func(*args, **kwargs)
 
             except Exception as e:
