@@ -1,0 +1,14 @@
+name: Deploy Backend to Render
+on:
+  push:
+    paths:
+      - "flask-api/**"
+      - ".github/workflows/deploy-backend.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
